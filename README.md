@@ -21,14 +21,18 @@ pnpm build
 6. Publicar las reglas de seguridad de `firestore.rules`: pegarlas en Firestore → Reglas,
    o con la CLI: `pnpm dlx firebase-tools deploy --only firestore:rules`.
 
-## Deploy (opcional, gratis en Firebase Hosting)
+## Deploy (Cloudflare Pages, integración con GitHub)
 
-```bash
-pnpm build
-pnpm dlx firebase-tools login
-pnpm dlx firebase-tools use --add      # elegir el proyecto
-pnpm dlx firebase-tools deploy
-```
+Cada push a `main` publica en https://dossoles.mysavia.app. Cada rama o PR genera una URL de preview.
+Las previews usan la misma base de Firebase que producción.
+
+Configuración del proyecto en Cloudflare:
+
+| Campo | Valor |
+|---|---|
+| Comando de build | `pnpm build:cloudflare` (tests unitarios + build; si un test falla, no se publica) |
+| Directorio de salida | `dist` |
+| Variables de entorno | las 4 `VITE_FIREBASE_*` de `.env.local` |
 
 ## Tests
 

@@ -1,5 +1,5 @@
 // CONFIGURACIÓN: número de teléfono con código de país y área, sin + ni espacios
-export const TELEFONO_WHATSAPP = '5491123456789'
+export const TELEFONO_WHATSAPP = '5492612528971'
 
 export const HORARIO = '10:30 a 19:30 hs'
 

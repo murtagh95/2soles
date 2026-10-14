@@ -11,7 +11,8 @@
     "test": "vitest run src",
     "test:reglas": "PATH=\"/opt/homebrew/opt/openjdk@21/bin:$PATH\" firebase emulators:exec --only firestore --project demo-dos-soles \"vitest run tests/reglas\"",
     "test:prod": "vitest run tests/produccion",
-    "test:todo": "pnpm test && pnpm test:reglas && pnpm test:prod"
+    "test:todo": "pnpm test && pnpm test:reglas && pnpm test:prod",
+    "build:cloudflare": "pnpm test && pnpm build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.3.1",
@@ -33,5 +34,9 @@
     "typescript": "~6.0.2",
     "vite": "^8.3.0",
     "vitest": "^5.0.4"
+  },
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": ">=22"
   }
 }
