@@ -29,3 +29,14 @@ pnpm dlx firebase-tools login
 pnpm dlx firebase-tools use --add      # elegir el proyecto
 pnpm dlx firebase-tools deploy
 ```
+
+## Tests
+
+```bash
+pnpm test          # lógica de precios y fechas
+pnpm test:reglas   # firestore.rules contra el emulador local (necesita Java 21: brew install openjdk@21)
+pnpm test:prod     # chequea el Firebase real: reglas publicadas y registro de cuentas cerrado
+pnpm test:todo     # los tres
+```
+
+Si cambiás `firestore.rules`, corré `pnpm test:reglas` antes de publicarlas en la consola, y `pnpm test:prod` después.

@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run src",
+    "test:reglas": "PATH=\"/opt/homebrew/opt/openjdk@21/bin:$PATH\" firebase emulators:exec --only firestore --project demo-dos-soles \"vitest run tests/reglas\"",
+    "test:prod": "vitest run tests/produccion",
+    "test:todo": "pnpm test && pnpm test:reglas && pnpm test:prod"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.3.1",
@@ -17,14 +21,17 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
+    "firebase-tools": "^15.33.0",
     "oxlint": "^1.81.0",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",
-    "vite": "^8.3.0"
+    "vite": "^8.3.0",
+    "vitest": "^5.0.4"
   }
 }
