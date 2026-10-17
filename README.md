@@ -44,3 +44,14 @@ pnpm test:todo     # los tres
 ```
 
 Si cambiás `firestore.rules`, corré `pnpm test:reglas` antes de publicarlas en la consola, y `pnpm test:prod` después.
+
+GitHub Actions (`.github/workflows/tests.yml`) corre lint, `pnpm test`, `pnpm test:reglas` y el build en cada push y PR.
+`test:prod` no corre ahí porque necesita las credenciales de `.env.local`.
+
+## Contenido que se edita a mano
+
+- **Preguntas frecuentes:** `PREGUNTAS_FRECUENTES` en `src/config.ts`. Con la lista vacía, la sección no se muestra.
+- **Feriados de respaldo:** `src/feriadosRespaldo.json` se usa si la API de feriados falla. Actualizarlo una vez por año
+  con los datos de `https://api.argentinadatos.com/v1/feriados/<año>`.
+- **SEO:** título, descripción, Open Graph y datos estructurados están en `index.html`. Si cambia el dominio,
+  actualizar ahí, en `public/robots.txt`, y en `public/sitemap.xml`.

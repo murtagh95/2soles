@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
+import { claveFecha } from './fechas.ts'
 import { firebaseApp } from './firebase.ts'
 import { cargarFirestore } from './firestore.ts'
 
 const COLECCION = 'ocupados'
 
-// Días reservados, en tiempo real. Cada documento de "ocupados" tiene como ID la fecha YYYY-MM-DD.
+// Días reservados de hoy en adelante, en tiempo real. Cada documento de "ocupados" tiene como ID la fecha YYYY-MM-DD.
+// Los días pasados no se leen: así cada visita no paga lecturas de toda la historia de reservas.
 export function useOcupados() {
   const [ocupados, setOcupados] = useState<Set<string>>(new Set())
   const [error, setError] = useState<string | null>(null)
@@ -13,10 +15,10 @@ export function useOcupados() {
     if (!firebaseApp) return
     let cancelado = false
     let desuscribir = () => {}
-    cargarFirestore().then(({ db, collection, onSnapshot }) => {
+    cargarFirestore().then(({ db, collection, documentId, onSnapshot, query, where }) => {
       if (cancelado) return
       desuscribir = onSnapshot(
-        collection(db, COLECCION),
+        query(collection(db, COLECCION), where(documentId(), '>=', claveFecha(new Date()))),
         (snap) => {
           setOcupados(new Set(snap.docs.map((d) => d.id)))
           setError(null)

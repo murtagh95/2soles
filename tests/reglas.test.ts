@@ -6,7 +6,18 @@ import {
   initializeTestEnvironment,
   type RulesTestEnvironment,
 } from '@firebase/rules-unit-testing'
-import { deleteDoc, doc, getDoc, getDocs, collection, setDoc, serverTimestamp } from 'firebase/firestore'
+import {
+  collection,
+  deleteDoc,
+  doc,
+  documentId,
+  getDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  setDoc,
+  where,
+} from 'firebase/firestore'
 import { readFileSync } from 'node:fs'
 import { afterAll, beforeAll, beforeEach, describe, test } from 'vitest'
 
@@ -42,6 +53,11 @@ const admin = () => env.authenticatedContext(ADMIN_UID).firestore()
 describe('ocupados', () => {
   test('cualquiera puede ver los días ocupados', async () => {
     await assertSucceeds(getDocs(collection(anonimo(), 'ocupados')))
+  })
+
+  test('cualquiera puede pedir solo los días de hoy en adelante (lo que usa la web)', async () => {
+    const desdeHoy = query(collection(anonimo(), 'ocupados'), where(documentId(), '>=', '2026-01-01'))
+    await assertSucceeds(getDocs(desdeHoy))
   })
 
   test('sin login no se puede reservar ni liberar un día', async () => {

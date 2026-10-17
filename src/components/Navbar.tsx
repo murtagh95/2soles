@@ -1,4 +1,5 @@
-import { IMAGENES } from '../config.ts'
+import { IMAGENES, PREGUNTAS_FRECUENTES } from '../config.ts'
+import Icono from './Icono.tsx'
 
 export default function Navbar() {
   return (
@@ -12,13 +13,16 @@ export default function Navbar() {
             <a href="#tour360" className="hover:text-green-600 transition">Tour 360°</a>
           )}
           <a href="#reservar" className="hover:text-green-600 transition">Reservar</a>
+          {PREGUNTAS_FRECUENTES.length > 0 && (
+            <a href="#preguntas" className="hover:text-green-600 transition">Preguntas</a>
+          )}
           <a href="#ubicacion" className="hover:text-green-600 transition">Ubicación</a>
         </div>
         <a
           href="#reservar"
           className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center transition shadow-lg"
         >
-          <i className="fab fa-whatsapp mr-2 text-lg"></i> Reservar
+          <Icono nombre="whatsapp" className="mr-2 text-lg" /> Reservar
         </a>
       </div>
     </nav>

@@ -1,11 +1,12 @@
 import { UBICACION } from '../config.ts'
+import Icono from './Icono.tsx'
 
 export default function Ubicacion() {
   return (
     <section id="ubicacion" className="py-16 px-4 max-w-7xl mx-auto">
       <h2 className="text-3xl font-bold text-center mb-2 text-gray-800">Ubicación</h2>
       <p className="text-center text-gray-600 mb-8">
-        <i className="fas fa-map-marker-alt text-red-500 mr-2"></i>
+        <Icono nombre="ubicacion" className="text-red-500 mr-2" />
         {UBICACION.direccion}
       </p>
       <div className="rounded-xl overflow-hidden shadow-lg bg-white">
@@ -25,7 +26,7 @@ export default function Ubicacion() {
           rel="noopener noreferrer"
           className="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-full shadow-lg transition"
         >
-          <i className="fas fa-directions mr-2"></i> Cómo llegar
+          <Icono nombre="direcciones" className="mr-2" /> Cómo llegar
         </a>
       </div>
     </section>

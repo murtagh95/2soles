@@ -8,10 +8,20 @@ import { auth } from '../auth.ts'
 import { firebaseConfigurado } from '../firebase.ts'
 import { useFeriados } from '../useFeriados.ts'
 import { marcarOcupado, useOcupados } from '../useOcupados.ts'
+import Icono from './Icono.tsx'
 
 export default function Admin() {
   const [user, setUser] = useState<User | null>(null)
   const [cargando, setCargando] = useState(firebaseConfigurado)
+
+  // Que los buscadores no indexen el panel (además del Disallow en robots.txt)
+  useEffect(() => {
+    const meta = document.createElement('meta')
+    meta.name = 'robots'
+    meta.content = 'noindex, nofollow'
+    document.head.appendChild(meta)
+    return () => meta.remove()
+  }, [])
 
   useEffect(() => {
     if (!auth) return
@@ -97,10 +107,10 @@ function Panel({ user }: { user: User }) {
     <>
       <div className="flex gap-1 p-1 mb-6 bg-gray-100 rounded-lg">
         <button onClick={() => setPestania('reservas')} className={clasePestania('reservas')}>
-          <i className="fas fa-calendar-check mr-2"></i>Reservas
+          <Icono nombre="calendario" className="mr-2" />Reservas
         </button>
         <button onClick={() => setPestania('precios')} className={clasePestania('precios')}>
-          <i className="fas fa-tag mr-2"></i>Precios
+          <Icono nombre="etiqueta" className="mr-2" />Precios
         </button>
       </div>
       {pestania === 'reservas' ? <PanelReservas /> : <AdminPrecios />}

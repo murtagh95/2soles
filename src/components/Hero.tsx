@@ -1,22 +1,27 @@
 import { HORARIO, IMAGENES } from '../config.ts'
+import Icono from './Icono.tsx'
 
 export default function Hero() {
   return (
     <header className="relative bg-gray-900 h-[60vh] md:h-[70vh] flex items-center justify-center">
       <img
-        src={IMAGENES.portada}
-        alt="Pileta al aire libre"
+        src={IMAGENES.portada.src}
+        width={IMAGENES.portada.ancho}
+        height={IMAGENES.portada.alto}
+        fetchPriority="high"
+        alt="Pileta y parque del quincho Dos Soles en Maipú"
         className="absolute inset-0 w-full h-full object-cover opacity-60"
       />
       <div className="relative z-10 text-center px-4 max-w-3xl">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">
-          Tu día perfecto al aire libre
+          Quincho con pileta y parque para alquilar por día en Maipú
         </h1>
         <p className="text-lg md:text-xl text-white mb-6 drop-shadow-md">
-          Disfrutá de nuestro parquizado, pileta, quincho y churrasquera. Un espacio exclusivo para vos y los tuyos.
+          Tu día perfecto al aire libre en Mendoza: parquizado, pileta, quincho y churrasquera. Un espacio exclusivo
+          para vos y los tuyos.
         </p>
         <div className="inline-block bg-yellow-400 text-yellow-900 font-bold px-6 py-3 rounded-full shadow-lg text-lg mb-6">
-          <i className="far fa-clock mr-2"></i> Horario de alquiler: {HORARIO}
+          <Icono nombre="reloj" className="mr-2" /> Horario de alquiler: {HORARIO}
         </div>
         <br />
         <a

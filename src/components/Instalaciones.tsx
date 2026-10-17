@@ -1,4 +1,5 @@
 import { HORARIO, IMAGENES } from '../config.ts'
+import Icono from './Icono.tsx'
 
 const instalaciones = [
   {
@@ -31,7 +32,11 @@ export default function Instalaciones() {
         {instalaciones.map((item) => (
           <div key={item.titulo} className="rounded-xl overflow-hidden shadow-lg bg-white">
             <img
-              src={item.img}
+              src={item.img.src}
+              width={item.img.ancho}
+              height={item.img.alto}
+              loading="lazy"
+              decoding="async"
               alt={item.alt}
               className="w-full h-64 object-cover hover:scale-105 transition duration-500"
             />
@@ -42,7 +47,7 @@ export default function Instalaciones() {
           </div>
         ))}
         <div className="rounded-xl overflow-hidden shadow-lg bg-white flex flex-col justify-center items-center text-center p-8 border-2 border-dashed border-gray-300">
-          <i className="fas fa-bath text-4xl text-blue-400 mb-4"></i>
+          <Icono nombre="banio" className="text-4xl text-blue-400 mb-4" />
           <h3 className="font-bold text-xl mb-2">Baño y Servicios Completos</h3>
           <p className="text-gray-600 text-sm">
             Todo lo necesario para pasar el día entero (de {HORARIO.replace(' hs', '')}) con total comodidad y privacidad.

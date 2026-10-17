@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import Calendario from './Calendario.tsx'
-import { HORARIO, MES_INICIAL, TELEFONO_WHATSAPP } from '../config.ts'
+import Icono from './Icono.tsx'
+import { HORARIO } from '../config.ts'
 import { claveFecha } from '../fechas.ts'
 import { calcularPrecio, formatearPrecio, usePrecios } from '../precios.ts'
 import { useFeriados } from '../useFeriados.ts'
 import { useOcupados } from '../useOcupados.ts'
+import { linkWhatsApp } from '../whatsapp.ts'
 
 export default function Reserva() {
   const { ocupados } = useOcupados()
@@ -15,20 +17,19 @@ export default function Reserva() {
   const selectedDate = fechaElegida && !ocupados.has(claveFecha(fechaElegida)) ? fechaElegida : null
   const [nombre, setNombre] = useState('')
   const [invitados, setInvitados] = useState('')
+  const [hoy] = useState(() => new Date())
+  const [intentoEnviar, setIntentoEnviar] = useState(false)
+  // Los errores aparecen recién al tocar el botón y se van solos al corregir el campo
+  const errorFecha = intentoEnviar && !selectedDate ? 'Elegí una fecha en el calendario.' : null
+  const errorNombre = intentoEnviar && !nombre.trim() ? 'Ingresá tu nombre.' : null
 
   const precioStr = formatearPrecio(selectedDate ? calcularPrecio(selectedDate, precios, feriados) : 0)
   const feriadoElegido = selectedDate ? feriados.get(claveFecha(selectedDate)) : undefined
 
   function sendToWhatsApp() {
     if (!preciosCargados) return
-    if (!selectedDate) {
-      alert('Por favor, selecciona una fecha primero en el calendario.')
-      return
-    }
-    if (!nombre) {
-      alert('Por favor, ingresa tu nombre.')
-      return
-    }
+    setIntentoEnviar(true)
+    if (!selectedDate || !nombre.trim()) return
 
     const fechaStr = selectedDate.toLocaleDateString('es-ES')
     const mensaje = `¡Hola! Me gustaría solicitar una reserva para el predio.
@@ -39,8 +40,7 @@ export default function Reserva() {
 
 ¿Tienen disponibilidad para ese día? ¡Gracias!`
 
-    const url = `https://wa.me/${TELEFONO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`
-    window.open(url, '_blank')
+    window.open(linkWhatsApp(mensaje), '_blank')
   }
 
   return (
@@ -49,7 +49,7 @@ export default function Reserva() {
         <div className="w-full md:w-1/2 p-6 md:p-8 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-200">
           <h3 className="text-2xl font-bold mb-4">Elegí tu fecha</h3>
           <Calendario
-            mesInicial={MES_INICIAL}
+            mesInicial={hoy}
             ocupados={ocupados}
             feriados={feriados}
             selectedDate={selectedDate}
@@ -57,7 +57,7 @@ export default function Reserva() {
           />
           <div className="mt-6 p-4 bg-blue-50 rounded-lg text-sm text-blue-800">
             <p>
-              <i className="fas fa-info-circle"></i> <strong>Recuerde:</strong> El alquiler corresponde a la jornada
+              <Icono nombre="info" /> <strong>Recuerde:</strong> El alquiler corresponde a la jornada
               completa de <strong>{HORARIO}</strong>.
             </p>
           </div>
@@ -79,6 +79,7 @@ export default function Reserva() {
                 : 'Ninguno'}
             </p>
             {feriadoElegido && <p className="text-sm font-medium text-orange-600 mt-1">Feriado: {feriadoElegido}</p>}
+            {errorFecha && <p className="text-sm text-red-600 mt-1">{errorFecha}</p>}
             <div className="mt-2 text-2xl font-extrabold text-green-600">{preciosCargados ? precioStr : '...'}</div>
           </div>
 
@@ -93,8 +94,10 @@ export default function Reserva() {
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
                 placeholder="Ej. Juan Pérez"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition"
+                aria-invalid={errorNombre !== null}
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition ${errorNombre ? 'border-red-500' : ''}`}
               />
+              {errorNombre && <p className="text-sm text-red-600 mt-1">{errorNombre}</p>}
             </div>
             <div>
               <label htmlFor="userGuests" className="block text-sm font-medium text-gray-700 mb-1">
@@ -114,7 +117,7 @@ export default function Reserva() {
               onClick={sendToWhatsApp}
               className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg shadow-lg flex justify-center items-center transition transform hover:-translate-y-1 mt-4"
             >
-              <i className="fab fa-whatsapp text-xl mr-2"></i> Solicitar por WhatsApp
+              <Icono nombre="whatsapp" className="text-xl mr-2" /> Solicitar por WhatsApp
             </button>
           </div>
         </div>

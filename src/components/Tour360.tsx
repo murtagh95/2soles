@@ -27,7 +27,7 @@ function Visor360({ panorama }: { panorama: string }) {
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-2">Recorré el lugar en 360°</h2>
-          <p className="text-gray-400">Arrastrá la imagen para mirar alrededor. Capturado con DJI Mini 3 Pro.</p>
+          <p className="text-gray-400">Arrastrá la imagen para mirar alrededor.</p>
         </div>
         <div className="rounded-xl overflow-hidden border-4 border-gray-700 shadow-2xl relative w-full h-[300px] md:h-[500px]">
           <div ref={containerRef} className="w-full h-full"></div>
