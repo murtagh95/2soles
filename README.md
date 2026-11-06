@@ -21,18 +21,19 @@ pnpm build
 6. Publicar las reglas de seguridad de `firestore.rules`: pegarlas en Firestore → Reglas,
    o con la CLI: `pnpm dlx firebase-tools deploy --only firestore:rules`.
 
-## Deploy (Cloudflare Pages, integración con GitHub)
+## Deploy (Cloudflare Workers, integración con GitHub)
 
-Cada push a `main` publica en https://dossoles.mysavia.app. Cada rama o PR genera una URL de preview.
-Las previews usan la misma base de Firebase que producción.
+El sitio es un Worker de solo archivos estáticos llamado `2soles` (https://2soles.nec-catalano.workers.dev).
+La configuración está en `wrangler.jsonc`. Cada push a `main` lo vuelve a construir y publicar.
 
-Configuración del proyecto en Cloudflare:
+Configuración en Cloudflare → Workers & Pages → `2soles` → Settings → Build:
 
 | Campo | Valor |
 |---|---|
+| Repositorio | `murtagh95/2soles`, rama `main` |
 | Comando de build | `pnpm build:cloudflare` (tests unitarios + build; si un test falla, no se publica) |
-| Directorio de salida | `dist` |
-| Variables de entorno | las 4 `VITE_FIREBASE_*` de `.env.local` |
+| Comando de deploy | `npx wrangler deploy` |
+| Variables de build | las 4 `VITE_FIREBASE_*` de `.env.local` (en *Build variables*, no en las variables del Worker) |
 
 ## Tests
 

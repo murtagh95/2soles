@@ -1,0 +1,12 @@
+// Deploy en Cloudflare Workers (sitio estático). Workers Builds corre `npx wrangler deploy` después del build.
+// "name" tiene que coincidir con el nombre del Worker en el panel de Cloudflare.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "2soles",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    // Cualquier ruta que no sea un archivo devuelve index.html: así andan /admin y la página de no encontrado
+    "not_found_handling": "single-page-application"
+  }
+}
