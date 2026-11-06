@@ -9,7 +9,7 @@ export default function Hero() {
         width={IMAGENES.portada.ancho}
         height={IMAGENES.portada.alto}
         fetchPriority="high"
-        alt="Pileta y parque del quincho Dos Soles en Maipú"
+        alt="Quincho y parque de Dos Soles en Maipú"
         className="absolute inset-0 w-full h-full object-cover opacity-60"
       />
       <div className="relative z-10 text-center px-4 max-w-3xl">
@@ -17,7 +17,7 @@ export default function Hero() {
           Quincho con pileta y parque para alquilar por día en Maipú
         </h1>
         <p className="text-lg md:text-xl text-white mb-6 drop-shadow-md">
-          Tu día perfecto al aire libre en Mendoza: parquizado, pileta, quincho y churrasquera. Un espacio exclusivo
+          Tu día perfecto al aire libre en Mendoza: parque, pileta, quincho techado y juegos. Un espacio exclusivo
           para vos y los tuyos.
         </p>
         <div className="inline-block bg-yellow-400 text-yellow-900 font-bold px-6 py-3 rounded-full shadow-lg text-lg mb-6">

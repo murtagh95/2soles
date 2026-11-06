@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import Footer from './components/Footer.tsx'
+import Galeria from './components/Galeria.tsx'
 import Hero from './components/Hero.tsx'
 import Instalaciones from './components/Instalaciones.tsx'
 import Navbar from './components/Navbar.tsx'
@@ -29,6 +30,7 @@ export default function App() {
       <Navbar />
       <Hero />
       <Instalaciones />
+      <Galeria />
       <Tour360 />
       <Reserva />
       <PreguntasFrecuentes />

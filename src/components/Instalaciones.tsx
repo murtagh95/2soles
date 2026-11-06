@@ -4,21 +4,21 @@ import Icono from './Icono.tsx'
 const instalaciones = [
   {
     img: IMAGENES.quincho,
-    alt: 'Quincho de madera con mesas',
-    titulo: 'Amplio Quincho y Churrasquera',
-    texto: 'Estructura rústica techada, perfecta para asados, equipada con mesas de estilo palet y mucho espacio.',
+    alt: 'Interior del quincho techado mirando al parque',
+    titulo: 'Quincho Techado',
+    texto: 'Amplio espacio bajo techo con piso de cemento, abierto al parque: el lugar para el asado y la mesa larga.',
   },
   {
     img: IMAGENES.pileta,
-    alt: 'Pileta amplia',
+    alt: 'Pileta cercada en el parque',
     titulo: 'Pileta Exclusiva',
-    texto: 'Piscina de aguas cristalinas rodeada de naturaleza y árboles, ideal para refrescarse en verano.',
+    texto: 'Pileta cercada en medio del parque, para refrescarse en verano con los chicos a resguardo.',
   },
   {
     img: IMAGENES.parque,
-    alt: 'Vista desde el quincho al parque',
+    alt: 'Sube y baja en el parque',
     titulo: 'Parquizado y Juegos',
-    texto: 'Amplio parque verde que incluye sector de descanso y hamacas para disfrutar del entorno natural.',
+    texto: 'Parque verde con olivos y juegos para los chicos, rodeado de álamos y con mucho lugar para correr.',
   },
 ]
 

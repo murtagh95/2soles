@@ -9,6 +9,7 @@ export default function Navbar() {
         {/* Visible en tablet/desktop, oculto en mobile */}
         <div className="hidden md:flex space-x-6 text-sm font-medium">
           <a href="#instalaciones" className="hover:text-green-600 transition">Instalaciones</a>
+          <a href="#galeria" className="hover:text-green-600 transition">Galería</a>
           {IMAGENES.panorama360 && (
             <a href="#tour360" className="hover:text-green-600 transition">Tour 360°</a>
           )}
