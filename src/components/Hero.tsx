@@ -14,10 +14,10 @@ export default function Hero() {
       />
       <div className="relative z-10 text-center px-4 max-w-3xl">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">
-          Quincho con pileta y parque para alquilar por día en Maipú
+          Quincho con pileta y parque para alquilar por día en Rodeo del Medio, Maipú
         </h1>
         <p className="text-lg md:text-xl text-white mb-6 drop-shadow-md">
-          Tu día perfecto al aire libre en Mendoza: parque, pileta, quincho techado y juegos. Un espacio exclusivo
+          Tu día perfecto al aire libre en Mendoza: quincho techado, parrilla, pileta y parque para hasta 25 personas. Un espacio exclusivo
           para vos y los tuyos.
         </p>
         <div className="inline-block bg-yellow-400 text-yellow-900 font-bold px-6 py-3 rounded-full shadow-lg text-lg mb-6">
@@ -26,7 +26,7 @@ export default function Hero() {
         <br />
         <a
           href="#reservar"
-          className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold px-8 py-4 rounded-full text-lg transition shadow-xl transform hover:scale-105"
+          className="inline-block bg-green-700 hover:bg-green-800 text-white font-bold px-8 py-4 rounded-full text-lg transition shadow-xl transform hover:scale-105"
         >
           Ver disponibilidad
         </a>

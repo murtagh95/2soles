@@ -24,7 +24,7 @@ export default function Ubicacion() {
           href={UBICACION.linkGoogleMaps}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-full shadow-lg transition"
+          className="inline-flex items-center bg-blue-700 hover:bg-blue-800 text-white font-bold px-6 py-3 rounded-full shadow-lg transition"
         >
           <Icono nombre="direcciones" className="mr-2" /> Cómo llegar
         </a>

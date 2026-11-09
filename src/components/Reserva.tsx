@@ -5,6 +5,7 @@ import { HORARIO } from '../config.ts'
 import { claveFecha } from '../fechas.ts'
 import { calcularPrecio, formatearPrecio, usePrecios } from '../precios.ts'
 import { useFeriados } from '../useFeriados.ts'
+import { useMontado } from '../useMontado.ts'
 import { useOcupados } from '../useOcupados.ts'
 import { linkWhatsApp } from '../whatsapp.ts'
 
@@ -18,6 +19,7 @@ export default function Reserva() {
   const [nombre, setNombre] = useState('')
   const [invitados, setInvitados] = useState('')
   const [hoy] = useState(() => new Date())
+  const montado = useMontado()
   const [intentoEnviar, setIntentoEnviar] = useState(false)
   // Los errores aparecen recién al tocar el botón y se van solos al corregir el campo
   const errorFecha = intentoEnviar && !selectedDate ? 'Elegí una fecha en el calendario.' : null
@@ -48,13 +50,18 @@ export default function Reserva() {
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
         <div className="w-full md:w-1/2 p-6 md:p-8 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-200">
           <h3 className="text-2xl font-bold mb-4">Elegí tu fecha</h3>
-          <Calendario
-            mesInicial={hoy}
-            ocupados={ocupados}
-            feriados={feriados}
-            selectedDate={selectedDate}
-            onSelect={setFechaElegida}
-          />
+          {/* El calendario depende de la fecha de hoy: se dibuja recién en el navegador, no en el prerender */}
+          {montado ? (
+            <Calendario
+              mesInicial={hoy}
+              ocupados={ocupados}
+              feriados={feriados}
+              selectedDate={selectedDate}
+              onSelect={setFechaElegida}
+            />
+          ) : (
+            <div className="h-[380px]" aria-hidden="true" />
+          )}
           <div className="mt-6 p-4 bg-blue-50 rounded-lg text-sm text-blue-800">
             <p>
               <Icono nombre="info" /> <strong>Recuerde:</strong> El alquiler corresponde a la jornada
@@ -67,7 +74,7 @@ export default function Reserva() {
           <h3 className="text-2xl font-bold mb-2">Detalles de la Reserva</h3>
 
           <div className="mb-6 p-4 bg-gray-100 rounded-lg text-center">
-            <p className="text-sm text-gray-500 mb-1">Día seleccionado:</p>
+            <p className="text-sm text-gray-600 mb-1">Día seleccionado:</p>
             <p className="text-xl font-bold text-gray-800">
               {selectedDate
                 ? selectedDate.toLocaleDateString('es-ES', {
@@ -78,9 +85,9 @@ export default function Reserva() {
                   })
                 : 'Ninguno'}
             </p>
-            {feriadoElegido && <p className="text-sm font-medium text-orange-600 mt-1">Feriado: {feriadoElegido}</p>}
+            {feriadoElegido && <p className="text-sm font-medium text-orange-700 mt-1">Feriado: {feriadoElegido}</p>}
             {errorFecha && <p className="text-sm text-red-600 mt-1">{errorFecha}</p>}
-            <div className="mt-2 text-2xl font-extrabold text-green-600">{preciosCargados ? precioStr : '...'}</div>
+            <div className="mt-2 text-2xl font-extrabold text-green-700">{preciosCargados ? precioStr : '...'}</div>
           </div>
 
           <div className="space-y-4">
@@ -115,7 +122,7 @@ export default function Reserva() {
 
             <button
               onClick={sendToWhatsApp}
-              className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg shadow-lg flex justify-center items-center transition transform hover:-translate-y-1 mt-4"
+              className="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-3 rounded-lg shadow-lg flex justify-center items-center transition transform hover:-translate-y-1 mt-4"
             >
               <Icono nombre="whatsapp" className="text-xl mr-2" /> Solicitar por WhatsApp
             </button>

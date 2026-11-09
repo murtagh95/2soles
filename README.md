@@ -23,7 +23,7 @@ pnpm build
 
 ## Deploy (Cloudflare Workers, integración con GitHub)
 
-El sitio es un Worker de solo archivos estáticos llamado `2soles` (https://2soles.nec-catalano.workers.dev).
+El sitio es un Worker de solo archivos estáticos llamado `2soles` (https://2soles.mysavia.app).
 La configuración está en `wrangler.jsonc`. Cada push a `main` lo vuelve a construir y publicar.
 
 Configuración en Cloudflare → Workers & Pages → `2soles` → Settings → Build:
@@ -34,6 +34,11 @@ Configuración en Cloudflare → Workers & Pages → `2soles` → Settings → B
 | Comando de build | `pnpm build:cloudflare` (tests unitarios + build; si un test falla, no se publica) |
 | Comando de deploy | `npx wrangler deploy` |
 | Variables de build | las 4 `VITE_FIREBASE_*` de `.env.local` (en *Build variables*, no en las variables del Worker) |
+
+**Prerender:** `pnpm build` arma la home en Node (`src/prerender.tsx` + `scripts/prerender.mjs`) y la deja escrita en
+`dist/index.html`, así Google y el navegador ven el contenido sin esperar al JavaScript. Ningún componente puede usar
+`window` ni `document` durante el render (solo dentro de `useEffect`); lo que depende de la fecha de hoy se dibuja
+después de montar (`useMontado`).
 
 ## Tests
 

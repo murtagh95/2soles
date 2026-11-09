@@ -1,7 +1,18 @@
 // CONFIGURACIÓN: número de teléfono con código de país y área, sin + ni espacios
 export const TELEFONO_WHATSAPP = '5492612528971'
 
-export const HORARIO = '10:30 a 19:30 hs'
+export const HORARIO = '10 a 20 hs'
+
+// Lo que se entrega con el alquiler (sección "Qué incluye")
+export const CAPACIDAD = 25
+export const INCLUYE = [
+  'Quincho techado',
+  'Pileta',
+  'Sombrilla',
+  `Mesa y sillas para ${CAPACIDAD} personas`,
+  'Parrilla',
+  'Baños',
+]
 
 // Precios que se usan hasta que se carguen desde el panel de admin (/admin → Precios)
 export const PRECIOS_POR_DEFECTO = {
@@ -22,7 +33,9 @@ export const IMAGENES = {
 }
 
 export const UBICACION = {
-  direccion: 'Calle Belgrano, Rodeo del Medio, Maipú, Mendoza',
+  direccion: 'Belgrano y Ruta 60, Rodeo del Medio, Maipú, Mendoza',
+  // Ficha de Dos Soles en Google Maps (opiniones, fotos, horarios)
+  linkFicha: 'https://maps.google.com/?cid=8434415992512938487',
   // Coordenadas: -33.027243, -68.730593
   // Abre Google Maps con el recorrido hasta el lugar
   linkGoogleMaps: 'https://www.google.com/maps/dir/?api=1&destination=-33.027243,-68.730593',
@@ -46,8 +59,33 @@ export const GALERIA = [
 // Ejemplo: { pregunta: '¿Cuántas personas entran?', respuesta: 'Hasta 30 personas.' },
 export const PREGUNTAS_FRECUENTES: { pregunta: string; respuesta: string }[] = [
   {
+    pregunta: '¿Para cuántas personas es el lugar?',
+    respuesta: `Para hasta ${CAPACIDAD} personas. Hay mesa y sillas para ${CAPACIDAD}, quincho techado, parrilla y pileta.`,
+  },
+  {
+    pregunta: '¿Hay que dejar seña para reservar?',
+    respuesta: 'No, no se necesita seña. Elegí la fecha en el calendario y escribinos por WhatsApp para confirmarla.',
+  },
+  {
     pregunta: '¿Qué pasa si llueve o hace mal tiempo?',
     respuesta:
       'La reserva no se cancela ni se reprograma por mal clima. El quincho es techado y tiene lugar para todos, así que el día se disfruta igual: el asado, la mesa y la charla siguen bajo techo.',
   },
 ]
+
+// Opiniones de Google Maps. Copiá a mano las que quieras mostrar (texto tal cual, nombre como figura en Google).
+// promedio y cantidad: los que muestra la ficha. Con cantidad en null se muestra solo el promedio.
+// Ejemplo de opinión: { autor: 'María G.', estrellas: 5, texto: 'Hermoso lugar, volvemos seguro.' },
+export const OPINIONES = {
+  promedio: 5,
+  cantidad: 5 as number | null,
+  lista: [
+    { autor: 'Mariana C.', estrellas: 5, texto: 'Festejamos un cumpleaños y todo hermoso! 100% recomendable' },
+    {
+      autor: 'Mariel C.',
+      estrellas: 5,
+      texto: 'Hermoso lugar para disfrutar en familia, una pileta para pasar un día de calor, Hermoso',
+    },
+    { autor: 'María del Carmen S.', estrellas: 5, texto: 'Muy lindo el lugar ..cómodo para festejar un cumple ..' },
+  ] as { autor: string; estrellas: number; texto: string }[],
+}

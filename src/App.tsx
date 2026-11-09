@@ -6,7 +6,9 @@ import Instalaciones from './components/Instalaciones.tsx'
 import Navbar from './components/Navbar.tsx'
 import BotonWhatsApp from './components/BotonWhatsApp.tsx'
 import NoEncontrado from './components/NoEncontrado.tsx'
+import Opiniones from './components/Opiniones.tsx'
 import PreguntasFrecuentes from './components/PreguntasFrecuentes.tsx'
+import QueIncluye from './components/QueIncluye.tsx'
 import Reserva from './components/Reserva.tsx'
 import Tour360 from './components/Tour360.tsx'
 import Ubicacion from './components/Ubicacion.tsx'
@@ -15,7 +17,8 @@ import Ubicacion from './components/Ubicacion.tsx'
 const Admin = lazy(() => import('./components/Admin.tsx'))
 
 export default function App() {
-  const ruta = window.location.pathname.replace(/\/$/, '')
+  // En el prerender del build no hay window: se arma la home
+  const ruta = typeof window === 'undefined' ? '' : window.location.pathname.replace(/\/$/, '')
   if (ruta === '/admin')
     return (
       <Suspense>
@@ -30,8 +33,10 @@ export default function App() {
       <Navbar />
       <Hero />
       <Instalaciones />
+      <QueIncluye />
       <Galeria />
       <Tour360 />
+      <Opiniones />
       <Reserva />
       <PreguntasFrecuentes />
       <Ubicacion />

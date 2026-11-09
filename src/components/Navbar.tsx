@@ -21,7 +21,7 @@ export default function Navbar() {
         </div>
         <a
           href="#reservar"
-          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center transition shadow-lg"
+          className="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center transition shadow-lg"
         >
           <Icono nombre="whatsapp" className="mr-2 text-lg" /> Reservar
         </a>

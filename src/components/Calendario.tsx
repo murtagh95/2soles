@@ -56,14 +56,14 @@ export default function Calendario({
     selectedDate.getFullYear() === year
 
   function claseDia(fecha: Date, dia: number) {
-    if (isSelected(dia)) return 'bg-green-500 text-white shadow-md'
+    if (isSelected(dia)) return 'bg-green-700 text-white shadow-md'
     if (ocupados.has(claveFecha(fecha))) {
       return permitirOcupados
         ? 'bg-red-500 text-white hover:bg-red-600'
         : 'bg-red-100 text-red-400 line-through cursor-not-allowed'
     }
     if (esPasado(fecha)) return 'text-gray-300 cursor-not-allowed'
-    if (feriados.has(claveFecha(fecha))) return 'bg-orange-50 hover:bg-orange-100 text-orange-600 font-bold'
+    if (feriados.has(claveFecha(fecha))) return 'bg-orange-50 hover:bg-orange-100 text-orange-800 font-bold'
     return 'hover:bg-gray-200 text-gray-700'
   }
 
@@ -118,13 +118,13 @@ export default function Calendario({
       </div>
 
       <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 text-xs text-gray-500">
-        {!permitirOcupados && <ItemLeyenda clase="bg-green-500" texto="Seleccionado" />}
+        {!permitirOcupados && <ItemLeyenda clase="bg-green-700" texto="Seleccionado" />}
         <ItemLeyenda
           clase={permitirOcupados ? 'bg-red-500 text-white' : 'bg-red-100 text-red-400'}
           cantidad={ocupadosMes}
           texto={permitirOcupados ? 'Reservados' : 'No disponibles'}
         />
-        <ItemLeyenda clase="bg-orange-50 text-orange-600" cantidad={feriadosMes} texto="Feriados" />
+        <ItemLeyenda clase="bg-orange-50 text-orange-800" cantidad={feriadosMes} texto="Feriados" />
         {leyendaDestacados && (
           <ItemLeyenda clase="ring-2 ring-yellow-400 text-gray-700" cantidad={destacadosMes} texto={leyendaDestacados} />
         )}

@@ -6,7 +6,7 @@ const instalaciones = [
     img: IMAGENES.quincho,
     alt: 'Interior del quincho techado mirando al parque',
     titulo: 'Quincho Techado',
-    texto: 'Amplio espacio bajo techo con piso de cemento, abierto al parque: el lugar para el asado y la mesa larga.',
+    texto: 'Amplio espacio bajo techo, abierto al parque, con parrilla y mesa y sillas para 25 personas.',
   },
   {
     img: IMAGENES.pileta,
@@ -25,7 +25,19 @@ const instalaciones = [
 export default function Instalaciones() {
   return (
     <section id="instalaciones" className="py-16 px-4 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-10 text-gray-800">Nuestras Instalaciones</h2>
+      <h2 className="text-3xl font-bold text-center mb-4 text-gray-800">Nuestras Instalaciones</h2>
+      <div className="max-w-3xl mx-auto text-center text-gray-700 mb-10 space-y-3">
+        <p>
+          Dos Soles es un predio para alquilar por día en Rodeo del Medio, Maipú, a pocos minutos de la ciudad de
+          Mendoza. El lugar es solo para tu grupo durante toda la jornada, de {HORARIO}.
+        </p>
+        <p>
+          Tiene un quincho techado con parrilla y vista al parque, pileta cercada, juegos para los chicos y baños, para
+          hasta 25 personas. Es ideal para cumpleaños, reuniones familiares, juntadas con amigos, despedidas de fin de año y días
+          de pileta en verano.
+        </p>
+        <p>Elegí la fecha en el calendario, mirá el precio del día y escribinos por WhatsApp para confirmar la reserva.</p>
+      </div>
 
       {/* Grid responsivo: 1 columna en celular, 2 en tablet/desktop */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -50,7 +62,7 @@ export default function Instalaciones() {
           <Icono nombre="banio" className="text-4xl text-blue-400 mb-4" />
           <h3 className="font-bold text-xl mb-2">Baño y Servicios Completos</h3>
           <p className="text-gray-600 text-sm">
-            Todo lo necesario para pasar el día entero (de {HORARIO.replace(' hs', '')}) con total comodidad y privacidad.
+            Todo lo necesario para pasar el día entero (de {HORARIO}) con total comodidad y privacidad.
           </p>
         </div>
       </div>
