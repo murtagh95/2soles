@@ -37,6 +37,7 @@ function Visor360({ panorama }: { panorama: string }) {
       viewer = window.pannellum.viewer(containerRef.current, {
         type: 'equirectangular',
         panorama,
+        preview: IMAGENES.panorama360Preview,
         autoLoad: true,
         showControls: false,
       })

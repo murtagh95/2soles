@@ -27,9 +27,11 @@ export const IMAGENES = {
   quincho: { src: '/images/quincho.webp', ancho: 1024, alto: 768 },
   pileta: { src: '/images/pileta.webp', ancho: 1024, alto: 768 },
   parque: { src: '/images/parque.webp', ancho: 1024, alto: 768 },
-  // Imagen equirectangular tomada con el DJI (ej. '/images/panorama360.jpg').
-  // Mientras sea null, la sección Tour 360° no se muestra.
-  panorama360: '/images/3D527256-3393-4AA1-AB3D-8E5948BA1FBB_1_105_c.jpeg' as string | null,
+  // Foto 360 equirectangular (2:1), achicada a 6000×3000 para que la muestren también los celulares.
+  // El original de 12000×6000 está en _original/. Con null, la sección Tour 360° no se muestra.
+  panorama360: '/images/panorama360.webp' as string | null,
+  // Versión liviana que se ve mientras carga la grande
+  panorama360Preview: '/images/panorama360-preview.webp',
 }
 
 export const UBICACION = {
