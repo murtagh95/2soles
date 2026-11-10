@@ -87,7 +87,7 @@ export const PREGUNTAS_FRECUENTES: { pregunta: string; respuesta: string }[] = [
 // Ejemplo de opinión: { autor: 'María G.', estrellas: 5, texto: 'Hermoso lugar, volvemos seguro.' },
 export const OPINIONES = {
   promedio: 5,
-  cantidad: 5 as number | null,
+  cantidad: 4 as number | null,
   lista: [
     { autor: 'Mariana C.', estrellas: 5, texto: 'Festejamos un cumpleaños y todo hermoso! 100% recomendable' },
     {
