@@ -60,7 +60,7 @@ export default function AdminPrecios() {
           feriados={feriados}
           destacados={new Set(Object.keys(precios.especiales))}
           leyendaDestacados="Precio especial"
-          selectedDate={diaElegido}
+          seleccionados={new Set(diaElegido ? [claveFecha(diaElegido)] : [])}
           onSelect={setDiaElegido}
           permitirOcupados
         />

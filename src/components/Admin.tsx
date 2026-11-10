@@ -73,6 +73,7 @@ function Login() {
     <form onSubmit={ingresar} className="space-y-4">
       <input
         type="email"
+        autoComplete="username"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
@@ -81,6 +82,7 @@ function Login() {
       />
       <input
         type="password"
+        autoComplete="current-password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Contraseña"

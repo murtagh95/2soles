@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { claveFecha, esPasado } from '../fechas.ts'
+import { formatearPrecioCorto } from '../precios.ts'
 
 const MESES = [
   'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -11,7 +12,12 @@ type Props = {
   mesInicial: Date
   ocupados: Set<string>
   onSelect: (fecha: Date) => void
-  selectedDate?: Date | null
+  // Días elegidos, por clave YYYY-MM-DD
+  seleccionados?: Set<string>
+  // Vista pública: tocar un día ocupado avisa en vez de no hacer nada
+  onOcupado?: (fecha: Date) => void
+  // Precio de cada día, para mostrarlo abreviado debajo del número
+  precioDe?: (fecha: Date) => number
   // En el panel de admin los días ocupados se pueden clickear para liberarlos
   permitirOcupados?: boolean
   // Fecha YYYY-MM-DD → nombre del feriado
@@ -25,7 +31,9 @@ export default function Calendario({
   mesInicial,
   ocupados,
   onSelect,
-  selectedDate = null,
+  seleccionados = new Set(),
+  onOcupado,
+  precioDe,
   permitirOcupados = false,
   feriados = new Map(),
   destacados = new Set(),
@@ -49,18 +57,12 @@ export default function Calendario({
   const feriadosMes = contarEnMes(feriados.keys())
   const destacadosMes = contarEnMes(destacados)
 
-  const isSelected = (dia: number) =>
-    selectedDate !== null &&
-    selectedDate.getDate() === dia &&
-    selectedDate.getMonth() === month &&
-    selectedDate.getFullYear() === year
-
-  function claseDia(fecha: Date, dia: number) {
-    if (isSelected(dia)) return 'bg-green-700 text-white shadow-md'
+  function claseDia(fecha: Date) {
+    if (seleccionados.has(claveFecha(fecha))) return 'bg-green-700 text-white shadow-md'
     if (ocupados.has(claveFecha(fecha))) {
       return permitirOcupados
         ? 'bg-red-500 text-white hover:bg-red-600'
-        : 'bg-red-100 text-red-400 line-through cursor-not-allowed'
+        : 'bg-red-100 text-red-700 line-through cursor-help'
     }
     if (esPasado(fecha)) return 'text-gray-300 cursor-not-allowed'
     if (feriados.has(claveFecha(fecha))) return 'bg-orange-50 hover:bg-orange-100 text-orange-800 font-bold'
@@ -75,13 +77,21 @@ export default function Calendario({
   return (
     <>
       <div className="flex justify-between items-center mb-4">
-        <button onClick={() => cambiarMes(-1)} className="p-2 bg-white rounded-full shadow hover:bg-gray-100">
+        <button
+          onClick={() => cambiarMes(-1)}
+          aria-label="Mes anterior"
+          className="h-11 w-11 bg-white rounded-full shadow hover:bg-gray-100 text-lg"
+        >
           &lt;
         </button>
         <h4 className="font-bold text-lg capitalize">
           {MESES[month]} {year}
         </h4>
-        <button onClick={() => cambiarMes(1)} className="p-2 bg-white rounded-full shadow hover:bg-gray-100">
+        <button
+          onClick={() => cambiarMes(1)}
+          aria-label="Mes siguiente"
+          className="h-11 w-11 bg-white rounded-full shadow hover:bg-gray-100 text-lg"
+        >
           &gt;
         </button>
       </div>
@@ -99,18 +109,24 @@ export default function Calendario({
           const fecha = new Date(year, month, dia)
           const clave = claveFecha(fecha)
           const ocupado = ocupados.has(clave)
-          const deshabilitado = esPasado(fecha) || (ocupado && !permitirOcupados)
+          const pasado = esPasado(fecha)
+          // Un ocupado se puede tocar si hay onOcupado (para avisar), pero no se elige
+          const bloqueado = ocupado && !permitirOcupados
+          const precio = precioDe && !pasado && !ocupado ? precioDe(fecha) : undefined
           return (
             <div key={dia}>
               <button
-                onClick={() => onSelect(fecha)}
-                disabled={deshabilitado}
+                onClick={() => (bloqueado ? onOcupado?.(fecha) : onSelect(fecha))}
+                disabled={pasado || (bloqueado && !onOcupado)}
+                aria-disabled={bloqueado || undefined}
+                aria-pressed={seleccionados.has(clave) || undefined}
                 title={descripcionDia(clave, ocupado)}
-                className={`p-2 w-10 h-10 mx-auto rounded-full transition flex items-center justify-center ${claseDia(fecha, dia)} ${
+                className={`w-11 ${precio !== undefined ? 'h-12 rounded-xl' : 'h-11 rounded-full'} mx-auto transition flex flex-col items-center justify-center leading-none ${claseDia(fecha)} ${
                   destacados.has(clave) ? 'ring-2 ring-yellow-400' : ''
                 }`}
               >
                 {dia}
+                {precio !== undefined && <span className="mt-1 text-[10px] font-normal opacity-80">{formatearPrecioCorto(precio)}</span>}
               </button>
             </div>
           )
@@ -118,9 +134,9 @@ export default function Calendario({
       </div>
 
       <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 text-xs text-gray-500">
-        {!permitirOcupados && <ItemLeyenda clase="bg-green-700" texto="Seleccionado" />}
+        {!permitirOcupados && <ItemLeyenda clase="bg-green-700" texto="Elegidos" />}
         <ItemLeyenda
-          clase={permitirOcupados ? 'bg-red-500 text-white' : 'bg-red-100 text-red-400'}
+          clase={permitirOcupados ? 'bg-red-500 text-white' : 'bg-red-100 text-red-700'}
           cantidad={ocupadosMes}
           texto={permitirOcupados ? 'Reservados' : 'No disponibles'}
         />

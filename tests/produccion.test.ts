@@ -5,9 +5,11 @@
 import { loadEnv } from 'vite'
 import { describe, expect, test } from 'vitest'
 
-const env = loadEnv('production', process.cwd(), 'VITE_')
+const env = loadEnv('production', process.cwd(), '')
 const API_KEY = env.VITE_FIREBASE_API_KEY
 const PROYECTO = env.VITE_FIREBASE_PROJECT_ID
+// Con App Check exigido en Firestore, un pedido sin token de App Check (como los de este test) se rechaza
+const APP_CHECK_EXIGIDO = env.APP_CHECK_EXIGIDO === '1'
 const BASE = `https://firestore.googleapis.com/v1/projects/${PROYECTO}/databases/(default)/documents`
 
 // Un día lejano que nunca debería existir: si alguna escritura de prueba llegara a pasar, no pisa datos reales
@@ -24,10 +26,14 @@ async function firestore(metodo: string, ruta: string, cuerpo?: unknown) {
 }
 
 describe.skipIf(!API_KEY || !PROYECTO)(`Firebase real (${PROYECTO})`, () => {
-  test('se pueden leer los días ocupados y los precios', async () => {
+  test.skipIf(APP_CHECK_EXIGIDO)('se pueden leer los días ocupados y los precios', async () => {
     expect(await firestore('GET', 'ocupados')).toBe(200)
     // 404 = todavía no se guardaron precios desde el admin; igual significa que la lectura está permitida
     expect([200, 404]).toContain(await firestore('GET', 'config/precios'))
+  })
+
+  test.runIf(APP_CHECK_EXIGIDO)('App Check exigido: sin token del sitio no se puede leer', async () => {
+    expect([401, 403]).toContain(await firestore('GET', 'ocupados'))
   })
 
   test('sin login no se puede reservar un día', async () => {

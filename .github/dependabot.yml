@@ -1,0 +1,16 @@
+# Dependabot abre PRs para actualizar dependencias; cada PR corre los tests de GitHub Actions.
+# Las alertas de seguridad se activan aparte: GitHub → Settings → Code security → Dependabot alerts.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      # Todas las actualizaciones menores y de parche juntas, en un solo PR por semana
+      menores:
+        update-types: [minor, patch]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

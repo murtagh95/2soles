@@ -58,6 +58,26 @@ GitHub Actions (`.github/workflows/tests.yml`) corre lint, `pnpm test`, `pnpm te
 
 - **Preguntas frecuentes:** `PREGUNTAS_FRECUENTES` en `src/config.ts`. Con la lista vacía, la sección no se muestra.
 - **Feriados de respaldo:** `src/feriadosRespaldo.json` se usa si la API de feriados falla. Actualizarlo una vez por año
-  con los datos de `https://api.argentinadatos.com/v1/feriados/<año>`.
+  con `pnpm feriados:actualizar`, que baja el año actual y el siguiente.
 - **SEO:** título, descripción, Open Graph y datos estructurados están en `index.html`. Si cambia el dominio,
   actualizar ahí, en `public/robots.txt`, y en `public/sitemap.xml`.
+
+## Seguridad
+
+- **Encabezados HTTP:** `public/_headers` define la CSP y los encabezados de seguridad que aplica Cloudflare. Si se agrega
+  un servicio externo nuevo (analytics, otro mapa), hay que sumar su dominio a la CSP. Para probarlos local:
+  `pnpm build && npx wrangler dev`.
+- **App Check (opcional, recomendado):** hace que Firestore acepte solo pedidos de este sitio.
+  1. Google Cloud (proyecto `dossoles-5002a`) → reCAPTCHA → crear clave web para `2soles.mysavia.app` y `localhost`.
+  2. Firebase → App Check → registrar la app web con esa clave (proveedor reCAPTCHA Enterprise).
+  3. Cargar `VITE_RECAPTCHA_ENTERPRISE_KEY` en `.env.local` y como build variable en Cloudflare, y publicar.
+  4. Mirar unos días en Firebase → App Check que las solicitudes salgan verificadas; después, **Exigir** para Cloud Firestore.
+  5. Poner `APP_CHECK_EXIGIDO=1` en `.env.local`: `pnpm test:prod` pasa a confirmar que sin token no se puede leer.
+  Para `pnpm dev` con App Check, registrar un token de depuración en App Check → Administrar tokens de depuración y
+  ponerlo en `VITE_APPCHECK_DEBUG_TOKEN`.
+- **Clave de API:** Google Cloud → Credenciales → Browser key → restringir a los sitios `https://2soles.mysavia.app/*` y
+  `http://localhost:5173/*`.
+- **Login:** Firebase Authentication → Configuración → activar la protección contra enumeración de emails.
+- **Dependencias:** Dependabot (`.github/dependabot.yml`) abre un PR por semana con las actualizaciones menores, y el CI
+  falla si `pnpm audit --prod` encuentra algo alto o crítico. Los `pnpm.overrides` de `package.json` fuerzan versiones
+  corregidas de dependencias internas de Firebase; cuando Firebase las actualice, se pueden borrar.

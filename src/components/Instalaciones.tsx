@@ -32,8 +32,8 @@ export default function Instalaciones() {
           Mendoza. El lugar es solo para tu grupo durante toda la jornada, de {HORARIO}.
         </p>
         <p>
-          Tiene un quincho techado con parrilla y vista al parque, pileta cercada, juegos para los chicos y baños, para
-          hasta 25 personas. Es ideal para cumpleaños, reuniones familiares, juntadas con amigos, despedidas de fin de año y días
+          Tiene un quincho techado con parrilla y vista al parque, pileta cercada, juegos para los chicos y baños, con
+          capacidad para 25 personas. Es ideal para cumpleaños, reuniones familiares, juntadas con amigos, despedidas de fin de año y días
           de pileta en verano.
         </p>
         <p>Elegí la fecha en el calendario, mirá el precio del día y escribinos por WhatsApp para confirmar la reserva.</p>

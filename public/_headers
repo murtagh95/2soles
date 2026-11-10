@@ -1,0 +1,15 @@
+# Encabezados que Cloudflare Workers agrega a cada archivo del sitio.
+# CSP: solo se permite lo que el sitio usa (Firebase, App Check, API de feriados, mapa de Google, reCAPTCHA).
+# Si se suma un servicio nuevo (por ejemplo analytics), hay que agregar su dominio acá.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://*.googleapis.com https://api.argentinadatos.com; frame-src https://www.google.com/maps/ https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# Los archivos de /assets llevan un hash en el nombre: se pueden guardar en caché para siempre
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

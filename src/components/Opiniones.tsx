@@ -24,10 +24,14 @@ export default function Opiniones() {
         <span>{cantidad ? `${cantidad} opiniones en Google Maps` : 'en Google Maps'}</span>
       </p>
 
+      {/* En celular, carrusel horizontal que se desliza con el dedo; desde tablet, grilla */}
       {lista.length > 0 && (
-        <div className="grid gap-4 md:grid-cols-3 text-left mb-8">
+        <div className="-mx-4 px-4 mb-8 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 text-left md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible">
           {lista.map((o) => (
-            <figure key={o.autor + o.texto} className="bg-white rounded-xl shadow p-5 flex flex-col">
+            <figure
+              key={o.autor + o.texto}
+              className="bg-white rounded-xl shadow p-5 flex flex-col shrink-0 basis-[85%] snap-center md:basis-auto"
+            >
               <Estrellas cantidad={o.estrellas} />
               <blockquote className="mt-2 text-gray-700 text-sm flex-1">“{o.texto}”</blockquote>
               <figcaption className="mt-3 text-sm font-bold text-gray-800">{o.autor}</figcaption>

@@ -34,10 +34,10 @@ export default function App() {
       <Hero />
       <Instalaciones />
       <QueIncluye />
+      <Reserva />
+      <Opiniones />
       <Galeria />
       <Tour360 />
-      <Opiniones />
-      <Reserva />
       <PreguntasFrecuentes />
       <Ubicacion />
       <Footer />

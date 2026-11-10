@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { claveFecha } from './fechas.ts'
-import { calcularPrecio, formatearPrecio, type Precios } from './precios.ts'
+import { calcularPrecio, formatearPrecio, formatearPrecioCorto, resumenReserva, type Precios } from './precios.ts'
 
 const precios: Precios = {
   semana: 45000,
@@ -47,5 +47,36 @@ describe('claveFecha', () => {
 describe('formatearPrecio', () => {
   test('usa el formato argentino', () => {
     expect(formatearPrecio(45000)).toBe('$45.000')
+  })
+})
+
+describe('resumenReserva', () => {
+  test('un solo día', () => {
+    const { dias, total } = resumenReserva([new Date(2026, 9, 14)], precios, feriados)
+    expect(dias).toHaveLength(1)
+    expect(total).toBe(45000)
+  })
+
+  test('varios días sueltos: los ordena y suma semana, finde, feriado y especial', () => {
+    const elegidos = [new Date(2026, 11, 25), new Date(2026, 9, 17), new Date(2026, 10, 23), new Date(2026, 9, 14)]
+    const { dias, total } = resumenReserva(elegidos, precios, feriados)
+    expect(dias.map((d) => d.clave)).toEqual(['2026-10-14', '2026-10-17', '2026-11-23', '2026-12-25'])
+    expect(dias.map((d) => d.precio)).toEqual([45000, 70000, 70000, 120000])
+    expect(dias[2].feriado).toBe('Día de la Soberanía Nacional')
+    expect(total).toBe(305000)
+  })
+
+  test('sin días el total es 0', () => {
+    expect(resumenReserva([], precios, feriados)).toEqual({ dias: [], total: 0 })
+  })
+})
+
+describe('formatearPrecioCorto', () => {
+  test('abrevia miles y millones', () => {
+    expect(formatearPrecioCorto(100000)).toBe('100k')
+    expect(formatearPrecioCorto(120000)).toBe('120k')
+    expect(formatearPrecioCorto(97500)).toBe('97,5k')
+    expect(formatearPrecioCorto(1500000)).toBe('1,5M')
+    expect(formatearPrecioCorto(0)).toBe('0')
   })
 })

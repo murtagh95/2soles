@@ -12,30 +12,40 @@
     "test:reglas": "PATH=\"/opt/homebrew/opt/openjdk@21/bin:$PATH\" firebase emulators:exec --only firestore --project demo-dos-soles \"vitest run tests/reglas\"",
     "test:prod": "vitest run tests/produccion",
     "test:todo": "pnpm test && pnpm test:reglas && pnpm test:prod",
-    "build:cloudflare": "pnpm test && pnpm build"
+    "build:cloudflare": "pnpm test && pnpm build",
+    "feriados:actualizar": "node scripts/actualizar-feriados.mjs"
   },
   "dependencies": {
-    "firebase": "^13.0.0",
+    "firebase": "^13.2.0",
     "pannellum": "^2.5.7",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^6.0.0",
-    "@tailwindcss/vite": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.5",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
-    "@vitejs/plugin-react": "^6.1.1",
-    "firebase-tools": "^15.33.0",
-    "oxlint": "^1.81.0",
-    "tailwindcss": "^4.3.3",
+    "@vitejs/plugin-react": "^6.3.0",
+    "firebase-tools": "^15.35.0",
+    "oxlint": "^1.93.0",
+    "tailwindcss": "^4.3.5",
     "typescript": "~6.0.2",
-    "vite": "^8.3.0",
-    "vitest": "^5.0.4"
+    "vite": "^8.3.7",
+    "vitest": "^5.1.0"
   },
   "packageManager": "pnpm@10.34.5",
   "engines": {
     "node": ">=22"
+  },
+  "pnpm": {
+    "overrides": {
+      "@grpc/grpc-js@<1.13.6": "^1.13.6",
+      "fast-uri@<3.1.9": "^3.1.9",
+      "qs@<6.16.1": "^6.16.1",
+      "undici@>=6 <6.29.1": "^6.29.1",
+      "undici@>=8 <8.12.2": "^8.12.2"
+    }
   }
 }

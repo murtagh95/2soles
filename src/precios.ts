@@ -79,3 +79,23 @@ export async function guardarPrecioEspecial(precios: Precios, clave: string, pre
     { merge: true },
   )
 }
+
+export type DiaReserva = { fecha: Date; clave: string; precio: number; feriado?: string }
+
+// Días elegidos (en cualquier orden) → cada uno con su precio, ordenados por fecha, y el total
+export function resumenReserva(fechas: Date[], precios: Precios, feriados: Map<string, string>) {
+  const dias: DiaReserva[] = [...fechas]
+    .sort((a, b) => a.getTime() - b.getTime())
+    .map((fecha) => {
+      const clave = claveFecha(fecha)
+      return { fecha, clave, precio: calcularPrecio(fecha, precios, feriados), feriado: feriados.get(clave) }
+    })
+  return { dias, total: dias.reduce((suma, d) => suma + d.precio, 0) }
+}
+
+// 100000 → "100k", 1500000 → "1,5M": entra debajo del número del día en el calendario
+export function formatearPrecioCorto(precio: number) {
+  if (precio >= 1_000_000) return `${(precio / 1_000_000).toLocaleString('es-AR', { maximumFractionDigits: 1 })}M`
+  if (precio >= 1000) return `${(precio / 1000).toLocaleString('es-AR', { maximumFractionDigits: 1 })}k`
+  return String(precio)
+}

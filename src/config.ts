@@ -1,6 +1,13 @@
 // CONFIGURACIÓN: número de teléfono con código de país y área, sin + ni espacios
 export const TELEFONO_WHATSAPP = '5492612528971'
 
+// Redes sociales del pie de página. Con null, esa red no se muestra.
+export const REDES = {
+  facebook: 'https://www.facebook.com/share/1CEy275qzw/?mibextid=wwXIfr' as string | null,
+  instagram: null as string | null,
+  tiktok: null as string | null,
+}
+
 export const HORARIO = '10 a 20 hs'
 
 // Lo que se entrega con el alquiler (sección "Qué incluye")
@@ -62,7 +69,7 @@ export const GALERIA = [
 export const PREGUNTAS_FRECUENTES: { pregunta: string; respuesta: string }[] = [
   {
     pregunta: '¿Para cuántas personas es el lugar?',
-    respuesta: `Para hasta ${CAPACIDAD} personas. Hay mesa y sillas para ${CAPACIDAD}, quincho techado, parrilla y pileta.`,
+    respuesta: `Tiene capacidad para ${CAPACIDAD} personas, con mesa y sillas para todos, quincho techado, parrilla y pileta.`,
   },
   {
     pregunta: '¿Hay que dejar seña para reservar?',
