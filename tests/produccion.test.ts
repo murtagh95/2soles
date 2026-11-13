@@ -48,6 +48,10 @@ describe.skipIf(!API_KEY || !PROYECTO)(`Firebase real (${PROYECTO})`, () => {
     expect(await firestore('PATCH', 'config/precios?updateMask.fieldPaths=semana', cuerpo)).toBe(403)
   })
 
+  test('sin login no se pueden ver los datos de las reservas', async () => {
+    expect(await firestore('GET', 'reservas')).toBe(403)
+  })
+
   test('sin login no se puede ver la lista de admins', async () => {
     expect(await firestore('GET', 'admins')).toBe(403)
   })

@@ -21,6 +21,12 @@ export function calcularPrecio(fecha: Date, precios: Precios, feriados: Map<stri
   return esFinDeSemana || feriados.has(clave) ? precios.finDeSemanaYFeriado : precios.semana
 }
 
+// Texto de un input → monto entero no negativo, o null si no es válido
+export function leerPrecio(valor: string) {
+  const precio = Number(valor)
+  return valor.trim() !== '' && Number.isInteger(precio) && precio >= 0 ? precio : null
+}
+
 export function formatearPrecio(precio: number) {
   return `$${precio.toLocaleString('es-AR')}`
 }

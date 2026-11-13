@@ -25,3 +25,9 @@ export function proximoLibre(desde: Date, ocupados: Set<string>, maxDias = 90) {
 export function formatearDia(fecha: Date) {
   return fecha.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })
 }
+
+// "2026-12-25" → Date local (new Date("2026-12-25") lo interpretaría en UTC)
+export function fechaDesdeClave(clave: string) {
+  const [y, m, d] = clave.split('-').map(Number)
+  return new Date(y, m - 1, d)
+}

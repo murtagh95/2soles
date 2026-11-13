@@ -1,12 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import Calendario from './Calendario.tsx'
 import { mensajeErrorGuardado } from './errorGuardado.ts'
-import { claveFecha, esPasado } from '../fechas.ts'
+import { claveFecha, esPasado, fechaDesdeClave } from '../fechas.ts'
 import {
   calcularPrecio,
   formatearPrecio,
   guardarPrecioEspecial,
   guardarPreciosBase,
+  leerPrecio,
   usePrecios,
   type Precios,
 } from '../precios.ts'
@@ -14,17 +15,6 @@ import { useFeriados } from '../useFeriados.ts'
 import { useOcupados } from '../useOcupados.ts'
 
 const claseInput = 'w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none'
-
-function leerPrecio(valor: string) {
-  const precio = Number(valor)
-  return valor.trim() !== '' && Number.isInteger(precio) && precio >= 0 ? precio : null
-}
-
-// "2026-12-25" → Date local (new Date("2026-12-25") lo interpretaría en UTC)
-function fechaDesdeClave(clave: string) {
-  const [y, m, d] = clave.split('-').map(Number)
-  return new Date(y, m - 1, d)
-}
 
 function formatearFecha(fecha: Date) {
   return fecha.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
