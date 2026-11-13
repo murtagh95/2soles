@@ -4,7 +4,7 @@ export const TELEFONO_WHATSAPP = '5492612528971'
 // Redes sociales del pie de página. Con null, esa red no se muestra.
 export const REDES = {
   facebook: 'https://www.facebook.com/share/1CEy275qzw/?mibextid=wwXIfr' as string | null,
-  instagram: null as string | null,
+  instagram: 'https://www.instagram.com/dossoles.eventos/' as string | null,
   tiktok: null as string | null,
 }
 

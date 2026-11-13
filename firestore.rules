@@ -1,13 +1,23 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Cualquiera puede ver qué días están ocupados; solo un admin puede cambiarlos
+    // Cualquiera puede ver qué días están ocupados; solo un admin puede cambiarlos.
+    // Cada día guarda el ID de su reserva, que tiene que existir e incluir ese día.
+    // Los datos personales viven en "reservas", que no es pública.
     match /ocupados/{fecha} {
       allow read: if true;
       allow create, update: if esAdmin()
         && fecha.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
-        && request.resource.data.keys().hasOnly(['creadoEn']);
+        && request.resource.data.keys().hasOnly(['creadoEn', 'reservaId'])
+        && request.resource.data.reservaId is string
+        && fecha in getAfter(/databases/$(database)/documents/reservas/$(request.resource.data.reservaId)).data.dias;
       allow delete: if esAdmin();
+    }
+
+    // Datos de cada reserva (nombre, teléfono, seña...): solo los ve y los cambia un admin
+    match /reservas/{id} {
+      allow read, delete: if esAdmin();
+      allow create, update: if esAdmin() && reservaValida(request.resource.data);
     }
 
     // Precios: cualquiera puede verlos; solo un admin puede cambiarlos
@@ -28,6 +38,20 @@ service cloud.firestore {
     function esAdmin() {
       return request.auth != null
         && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function reservaValida(d) {
+      return d.keys().hasOnly(['nombre', 'personas', 'sena', 'origen', 'origenOtro', 'telefono', 'precio', 'dias', 'creadoEn', 'actualizadoEn'])
+        && d.keys().hasAll(['nombre', 'personas', 'sena', 'origen', 'telefono', 'precio', 'dias', 'creadoEn', 'actualizadoEn'])
+        && d.nombre is string && d.nombre.size() > 0 && d.nombre.size() <= 100
+        && d.personas is int && d.personas > 0 && d.personas <= 500
+        && d.sena is int && d.sena >= 0
+        && d.precio is int && d.precio >= 0
+        && d.origen in ['instagram', 'facebook', 'google', 'web', 'recomendacion', 'repite', 'otro']
+        && d.get('origenOtro', '') is string && d.get('origenOtro', '').size() <= 100
+        && d.telefono is string && d.telefono.matches('^[0-9 +()-]{6,30}$')
+        && d.dias is list && d.dias.size() > 0 && d.dias.size() <= 31
+        && d.creadoEn is timestamp && d.actualizadoEn is timestamp;
     }
   }
 }

@@ -1,13 +1,9 @@
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut, type User } from 'firebase/auth'
 import { useEffect, useState, type FormEvent } from 'react'
 import AdminPrecios from './AdminPrecios.tsx'
-import Calendario from './Calendario.tsx'
-import { mensajeErrorGuardado } from './errorGuardado.ts'
-import { claveFecha } from '../fechas.ts'
+import AdminReservas from './AdminReservas.tsx'
 import { auth } from '../auth.ts'
 import { firebaseConfigurado } from '../firebase.ts'
-import { useFeriados } from '../useFeriados.ts'
-import { marcarOcupado, useOcupados } from '../useOcupados.ts'
 import Icono from './Icono.tsx'
 
 export default function Admin() {
@@ -115,7 +111,7 @@ function Panel({ user }: { user: User }) {
           <Icono nombre="etiqueta" className="mr-2" />Precios
         </button>
       </div>
-      {pestania === 'reservas' ? <PanelReservas /> : <AdminPrecios />}
+      {pestania === 'reservas' ? <AdminReservas /> : <AdminPrecios />}
       <div className="mt-6 pt-4 border-t flex justify-between items-center text-sm text-gray-500">
         <span>
           {user.email}
@@ -123,40 +119,6 @@ function Panel({ user }: { user: User }) {
           <span className="text-xs text-gray-400 select-all">UID: {user.uid}</span>
         </span>
         <button onClick={() => signOut(auth!)} className="hover:text-red-600">Cerrar sesión</button>
-      </div>
-    </>
-  )
-}
-
-function PanelReservas() {
-  const { ocupados, error } = useOcupados()
-  const feriados = useFeriados()
-  const [guardando, setGuardando] = useState<string | null>(null)
-  const [errorGuardado, setErrorGuardado] = useState<string | null>(null)
-  const [hoy] = useState(() => new Date())
-
-  async function alternar(fecha: Date) {
-    const clave = claveFecha(fecha)
-    setGuardando(clave)
-    setErrorGuardado(null)
-    try {
-      await marcarOcupado(clave, !ocupados.has(clave))
-    } catch (e) {
-      setErrorGuardado(mensajeErrorGuardado(e))
-    } finally {
-      setGuardando(null)
-    }
-  }
-
-  return (
-    <>
-      <p className="text-sm text-gray-600 mb-4">
-        Tocá un día para marcarlo como reservado; tocalo de nuevo para liberarlo.
-      </p>
-      <Calendario mesInicial={hoy} ocupados={ocupados} feriados={feriados} onSelect={alternar} permitirOcupados />
-      <div className="mt-4 min-h-5 text-sm">
-        {guardando && <p className="text-gray-500">Guardando {guardando}...</p>}
-        {(error || errorGuardado) && <p className="text-red-600">{errorGuardado ?? error}</p>}
       </div>
     </>
   )
