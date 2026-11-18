@@ -4,7 +4,7 @@ import Icono from './Icono.tsx'
 const instalaciones = [
   {
     img: IMAGENES.quincho,
-    alt: 'Interior del quincho techado mirando al parque',
+    alt: 'Quincho techado con mesas, tablones y sillas, mirando al parque',
     titulo: 'Quincho Techado',
     texto: 'Amplio espacio bajo techo, abierto al parque, con parrilla y mesa y sillas para 25 personas.',
   },

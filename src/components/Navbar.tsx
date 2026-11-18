@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { IMAGENES, PREGUNTAS_FRECUENTES } from '../config.ts'
+import { PANORAMAS, PREGUNTAS_FRECUENTES } from '../config.ts'
 import Icono from './Icono.tsx'
 
 // Mismo orden que las secciones de la página
@@ -8,7 +8,7 @@ const LINKS = [
   { href: '#reservar', texto: 'Reservar' },
   { href: '#opiniones', texto: 'Opiniones' },
   { href: '#galeria', texto: 'Galería' },
-  ...(IMAGENES.panorama360 ? [{ href: '#tour360', texto: 'Tour 360°' }] : []),
+  ...(PANORAMAS.length > 0 ? [{ href: '#tour360', texto: 'Tour 360°' }] : []),
   ...(PREGUNTAS_FRECUENTES.length > 0 ? [{ href: '#preguntas', texto: 'Preguntas' }] : []),
   { href: '#ubicacion', texto: 'Ubicación' },
 ]
