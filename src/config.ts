@@ -45,7 +45,7 @@ export const PANORAMAS: { nombre: string; src: string; preview: string }[] = [
 ]
 
 export const UBICACION = {
-  direccion: 'Belgrano y Ruta 60, Rodeo del Medio, Maipú, Mendoza',
+  direccion: 'Belgrano y Ruta 60, Russell, Maipú, Mendoza',
   // Ficha de Dos Soles en Google Maps (opiniones, fotos, horarios)
   linkFicha: 'https://maps.google.com/?cid=8434415992512938487',
   // Coordenadas: -33.027243, -68.730593

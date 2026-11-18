@@ -6,7 +6,7 @@ describe('prerender de la home', () => {
   test('se puede renderizar sin navegador y trae el contenido para Google', () => {
     const html = render()
     expect(html).toContain('<h1')
-    expect(html).toContain('Rodeo del Medio')
+    expect(html).toContain('Russell')
     expect(html).toContain('id="galeria"')
   })
 

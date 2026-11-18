@@ -28,7 +28,7 @@ export default function Instalaciones() {
       <h2 className="text-3xl font-bold text-center mb-4 text-gray-800">Nuestras Instalaciones</h2>
       <div className="max-w-3xl mx-auto text-center text-gray-700 mb-10 space-y-3">
         <p>
-          Dos Soles es un predio para alquilar por día en Rodeo del Medio, Maipú, a pocos minutos de la ciudad de
+          Dos Soles es un predio para alquilar por día en Russell, Maipú, a pocos minutos de la ciudad de
           Mendoza. El lugar es solo para tu grupo durante toda la jornada, de {HORARIO}.
         </p>
         <p>

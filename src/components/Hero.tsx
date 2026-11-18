@@ -14,7 +14,7 @@ export default function Hero() {
       />
       <div className="relative z-10 text-center px-4 max-w-3xl">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">
-          Quincho con pileta y parque para alquilar por día en Rodeo del Medio, Maipú
+          Quincho con pileta y parque para alquilar por día en Russell, Maipú
         </h1>
         <p className="text-lg md:text-xl text-white mb-6 drop-shadow-md">
           Tu día perfecto al aire libre en Mendoza: quincho techado, parrilla, pileta y parque, con capacidad para 25 personas. Un espacio exclusivo
