@@ -34,15 +34,18 @@ export const IMAGENES = {
   quincho: { src: '/images/quincho.webp', ancho: 1024, alto: 768 },
   pileta: { src: '/images/pileta.webp', ancho: 1024, alto: 768 },
   parque: { src: '/images/parque.webp', ancho: 1024, alto: 768 },
-  // Foto 360 equirectangular (2:1), achicada a 6000×3000 para que la muestren también los celulares.
-  // El original de 12000×6000 está en _original/. Con null, la sección Tour 360° no se muestra.
-  panorama360: '/images/panorama360.webp' as string | null,
-  // Versión liviana que se ve mientras carga la grande
-  panorama360Preview: '/images/panorama360-preview.webp',
 }
 
+// Fotos 360 equirectangulares (2:1) del Tour 360°, en el orden de los botones. Con la lista vacía, la sección no se muestra.
+// Achicadas a 6000×3000 para que las muestren también los celulares; los originales de 12000×6000 están en _original/.
+// preview: versión liviana de 1400×700 que se ve mientras carga la grande.
+export const PANORAMAS: { nombre: string; src: string; preview: string }[] = [
+  { nombre: 'Quincho', src: '/images/360/quincho.webp', preview: '/images/360/quincho-preview.webp' },
+  { nombre: 'Parque y pileta', src: '/images/panorama360.webp', preview: '/images/panorama360-preview.webp' },
+]
+
 export const UBICACION = {
-  direccion: 'Belgrano y Ruta 60, Rodeo del Medio, Maipú, Mendoza',
+  direccion: 'Belgrano y Ruta 60, Russell, Maipú, Mendoza',
   // Ficha de Dos Soles en Google Maps (opiniones, fotos, horarios)
   linkFicha: 'https://maps.google.com/?cid=8434415992512938487',
   // Coordenadas: -33.027243, -68.730593
@@ -53,8 +56,19 @@ export const UBICACION = {
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d263.7867177470402!2d-68.73059287979301!3d-33.02724327469488!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x967e73002ee8d579%3A0x750d10a8619b81f7!2sDos%20soles!5e1!3m2!1ses-419!2sar!4v1793981590390!5m2!1ses-419!2sar',
 }
 
-// Fotos de la galería (800 px de ancho, 4:3)
+// Fotos de la galería, en webp. En la grilla se recortan a 4:3; al ampliarlas se ven enteras.
+// Los originales están en _original/.
 export const GALERIA = [
+  { src: '/images/galeria/8.webp', alt: 'Quincho con mesas, tablones y sillas' },
+  { src: '/images/galeria/9.webp', alt: 'Mesas con manteles y bancos de madera bajo el quincho' },
+  { src: '/images/galeria/10.webp', alt: 'Mesa larga con sillas mirando al parque desde el quincho' },
+  { src: '/images/galeria/11.webp', alt: 'Mesas del quincho con vista al parque y la parrilla' },
+  { src: '/images/galeria/12.webp', alt: 'Quincho iluminado con mesas y sillas' },
+  { src: '/images/galeria/13.webp', alt: 'Parque con mesitas para chicos y el quincho al fondo' },
+  { src: '/images/galeria/14.webp', alt: 'Parrilla tipo tambor y barra de madera' },
+  { src: '/images/galeria/15.webp', alt: 'Mesitas y sillas para chicos en el parque' },
+  { src: '/images/galeria/16.webp', alt: 'Parque con la pileta cercada al fondo' },
+  { src: '/images/galeria/17.webp', alt: 'Mate en la hamaca paraguaya con vista al parque' },
   { src: '/images/galeria/1.webp', alt: 'Quincho, parque y baños vistos desde el fondo del predio' },
   { src: '/images/galeria/2.webp', alt: 'Baños y parque con árboles' },
   { src: '/images/galeria/3.webp', alt: 'Parque con juegos y la pileta cercada al fondo' },
@@ -87,8 +101,13 @@ export const PREGUNTAS_FRECUENTES: { pregunta: string; respuesta: string }[] = [
 // Ejemplo de opinión: { autor: 'María G.', estrellas: 5, texto: 'Hermoso lugar, volvemos seguro.' },
 export const OPINIONES = {
   promedio: 5,
-  cantidad: 4 as number | null,
+  cantidad: 5 as number | null,
   lista: [
+    {
+      autor: 'Pilar L.',
+      estrellas: 5,
+      texto: 'Excelente lugar para pasar el dia en familia. Un lugar donde la tranquilidad es única!!!!',
+    },
     { autor: 'Mariana C.', estrellas: 5, texto: 'Festejamos un cumpleaños y todo hermoso! 100% recomendable' },
     {
       autor: 'Mariel C.',
