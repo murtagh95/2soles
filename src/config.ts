@@ -101,8 +101,13 @@ export const PREGUNTAS_FRECUENTES: { pregunta: string; respuesta: string }[] = [
 // Ejemplo de opinión: { autor: 'María G.', estrellas: 5, texto: 'Hermoso lugar, volvemos seguro.' },
 export const OPINIONES = {
   promedio: 5,
-  cantidad: 4 as number | null,
+  cantidad: 5 as number | null,
   lista: [
+    {
+      autor: 'Pilar L.',
+      estrellas: 5,
+      texto: 'Excelente lugar para pasar el dia en familia. Un lugar donde la tranquilidad es única!!!!',
+    },
     { autor: 'Mariana C.', estrellas: 5, texto: 'Festejamos un cumpleaños y todo hermoso! 100% recomendable' },
     {
       autor: 'Mariel C.',
