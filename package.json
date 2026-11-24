@@ -16,7 +16,7 @@
     "feriados:actualizar": "node scripts/actualizar-feriados.mjs"
   },
   "dependencies": {
-    "firebase": "^13.2.0",
+    "firebase": "^13.4.0",
     "pannellum": "^2.5.7",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
@@ -28,12 +28,12 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.3.0",
-    "firebase-tools": "^15.35.0",
-    "oxlint": "^1.93.0",
+    "firebase-tools": "^15.37.0",
+    "oxlint": "^1.94.0",
     "tailwindcss": "^4.3.5",
     "typescript": "~6.0.2",
-    "vite": "^8.3.7",
-    "vitest": "^5.1.0"
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
   },
   "packageManager": "pnpm@10.34.5",
   "engines": {
