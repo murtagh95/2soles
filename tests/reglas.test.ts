@@ -152,6 +152,7 @@ describe('reservas', () => {
     await assertSucceeds(setDoc(ref, { ...reserva(['2026-12-30']), origen: 'facebook' }))
     await assertSucceeds(setDoc(ref, { ...reserva(['2026-12-30']), origen: 'web' }))
     await assertSucceeds(setDoc(ref, { ...reserva(['2026-12-30']), origen: 'otro', origenOtro: 'Un cartel en la ruta' }))
+    await assertSucceeds(setDoc(ref, { ...reserva(['2026-12-30']), notas: 'Traen torta.\nLlegan a las 11' }))
     await assertSucceeds(deleteDoc(ref))
   })
 
@@ -167,6 +168,8 @@ describe('reservas', () => {
     await assertFails(setDoc(ref, { ...valida, telefono: '<script>' }))
     await assertFails(setDoc(ref, { ...valida, dias: [] }))
     await assertFails(setDoc(ref, { ...valida, email: 'juan@ejemplo.com' }))
+    await assertFails(setDoc(ref, { ...valida, notas: 'a'.repeat(2001) }))
+    await assertFails(setDoc(ref, { ...valida, notas: 123 }))
     const { telefono: _, ...sinTelefono } = valida
     await assertFails(setDoc(ref, sinTelefono))
   })
@@ -203,6 +206,17 @@ describe('config/precios', () => {
     const ref = doc(admin(), 'config', 'precios')
     await assertFails(setDoc(ref, { ...preciosValidos, descuento: 10 }))
     await assertFails(setDoc(ref, { ...preciosValidos, especiales: 'gratis' }))
+  })
+
+  test('el admin puede programar un cambio de precios válido', async () => {
+    const ref = doc(admin(), 'config', 'precios')
+    const cambio = { desde: '2027-01-01', semana: 60000, finDeSemanaYFeriado: 90000 }
+    await assertSucceeds(setDoc(ref, { ...preciosValidos, cambio }))
+    await assertFails(setDoc(ref, { ...preciosValidos, cambio: { ...cambio, desde: 'enero' } }))
+    await assertFails(setDoc(ref, { ...preciosValidos, cambio: { ...cambio, semana: -1 } }))
+    await assertFails(setDoc(ref, { ...preciosValidos, cambio: { ...cambio, extra: 1 } }))
+    await assertFails(setDoc(ref, { ...preciosValidos, cambio: { desde: '2027-01-01', semana: 60000 } }))
+    await assertFails(setDoc(ref, { ...preciosValidos, cambio: 'enero' }))
   })
 
   test('nadie puede escribir otros documentos de config', async () => {

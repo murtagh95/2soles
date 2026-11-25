@@ -11,7 +11,7 @@ export const REDES = {
 export const HORARIO = '10 a 20 hs'
 
 // Lo que se entrega con el alquiler (sección "Qué incluye")
-export const CAPACIDAD = 25
+export const CAPACIDAD = '25 a 30'
 export const INCLUYE = [
   'Quincho techado',
   'Pileta',
@@ -19,6 +19,8 @@ export const INCLUYE = [
   `Mesa y sillas para ${CAPACIDAD} personas`,
   'Parrilla',
   'Baños',
+  'Heladera con freezer',
+  'Wifi',
 ]
 
 // Precios que se usan hasta que se carguen desde el panel de admin (/admin → Precios)
@@ -69,6 +71,8 @@ export const GALERIA = [
   { src: '/images/galeria/15.webp', alt: 'Mesitas y sillas para chicos en el parque' },
   { src: '/images/galeria/16.webp', alt: 'Parque con la pileta cercada al fondo' },
   { src: '/images/galeria/17.webp', alt: 'Mate en la hamaca paraguaya con vista al parque' },
+  { src: '/images/galeria/19.webp', alt: 'Heladera con freezer y estante con pava eléctrica en el quincho' },
+  { src: '/images/galeria/18.webp', alt: 'Baño con inodoro y lavatorio' },
   { src: '/images/galeria/1.webp', alt: 'Quincho, parque y baños vistos desde el fondo del predio' },
   { src: '/images/galeria/2.webp', alt: 'Baños y parque con árboles' },
   { src: '/images/galeria/3.webp', alt: 'Parque con juegos y la pileta cercada al fondo' },
@@ -101,8 +105,15 @@ export const PREGUNTAS_FRECUENTES: { pregunta: string; respuesta: string }[] = [
 // Ejemplo de opinión: { autor: 'María G.', estrellas: 5, texto: 'Hermoso lugar, volvemos seguro.' },
 export const OPINIONES = {
   promedio: 5,
-  cantidad: 5 as number | null,
+  cantidad: 9 as number | null,
   lista: [
+    {
+      autor: 'Lautaro D.',
+      estrellas: 5,
+      texto:
+        'Excelente lugar para ir a pasar una tarde entre amigos, comer un buen asado y meterse a la pileta! Super recomendado la verdad 10 puntos',
+    },
+    { autor: 'Oscar A.', estrellas: 5, texto: 'Hermoso lugar para pasar el finde los dueños son muy amistosos' },
     {
       autor: 'Pilar L.',
       estrellas: 5,

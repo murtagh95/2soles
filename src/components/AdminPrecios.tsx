@@ -5,10 +5,12 @@ import { claveFecha, esPasado, fechaDesdeClave } from '../fechas.ts'
 import {
   calcularPrecio,
   formatearPrecio,
+  guardarCambioPrecios,
   guardarPrecioEspecial,
   guardarPreciosBase,
   leerPrecio,
   usePrecios,
+  type CambioPrecios,
   type Precios,
 } from '../precios.ts'
 import { useFeriados } from '../useFeriados.ts'
@@ -38,6 +40,8 @@ export default function AdminPrecios() {
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <PreciosBase precios={precios} />
+
+      <CambioDePrecios key={JSON.stringify(precios.cambio ?? null)} precios={precios} />
 
       <section>
         <h2 className="font-bold text-lg mb-1">Precio de un día puntual</h2>
@@ -111,7 +115,8 @@ function PreciosBase({ precios }: { precios: Precios }) {
 
   return (
     <form onSubmit={guardar}>
-      <h2 className="font-bold text-lg mb-3">Precios generales</h2>
+      <h2 className="font-bold text-lg mb-1">Precios generales</h2>
+      <p className="text-sm text-gray-600 mb-3">Los que se cobran hoy.</p>
       <div className="grid grid-cols-2 gap-3">
         <label className="text-sm text-gray-700">
           Entre semana
@@ -131,6 +136,84 @@ function PreciosBase({ precios }: { precios: Precios }) {
       </div>
       <div className="flex items-center gap-3 mt-3">
         <button className="bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded-lg text-sm">Guardar</button>
+        {estado && <span className="text-sm text-gray-600">{estado}</span>}
+      </div>
+    </form>
+  )
+}
+
+function CambioDePrecios({ precios }: { precios: Precios }) {
+  const { cambio } = precios
+  const [desde, setDesde] = useState(cambio?.desde ?? '')
+  const [semana, setSemana] = useState(cambio ? String(cambio.semana) : '')
+  const [finDeSemana, setFinDeSemana] = useState(cambio ? String(cambio.finDeSemanaYFeriado) : '')
+  const [estado, setEstado] = useState<string | null>(null)
+  const [minimo] = useState(() => {
+    const manana = new Date()
+    manana.setDate(manana.getDate() + 1)
+    return claveFecha(manana)
+  })
+
+  async function guardar(nuevo: CambioPrecios | null) {
+    setEstado('Guardando...')
+    try {
+      await guardarCambioPrecios(precios, nuevo)
+      setEstado(nuevo ? 'Cambio de precios guardado.' : 'Cambio de precios quitado.')
+    } catch (err) {
+      setEstado(mensajeErrorGuardado(err))
+    }
+  }
+
+  function enviar(e: FormEvent) {
+    e.preventDefault()
+    const precioSemana = leerPrecio(semana)
+    const precioFinDeSemana = leerPrecio(finDeSemana)
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(desde) || desde < minimo) {
+      setEstado('Elegí una fecha a partir de mañana.')
+      return
+    }
+    if (precioSemana === null || precioFinDeSemana === null) {
+      setEstado('Ingresá montos enteros, sin puntos ni signos.')
+      return
+    }
+    guardar({ desde, semana: precioSemana, finDeSemanaYFeriado: precioFinDeSemana })
+  }
+
+  return (
+    <form onSubmit={enviar}>
+      <h2 className="font-bold text-lg mb-1">Cambio de precios programado</h2>
+      <p className="text-sm text-gray-600 mb-3">
+        Los precios generales nuevos y desde qué día rigen. Hasta ese día se cobran los de arriba; desde ese día, estos. Los
+        precios especiales de días puntuales se siguen respetando.
+      </p>
+      <label className="block text-sm text-gray-700 mb-3">
+        A partir del
+        <input type="date" min={minimo} value={desde} onChange={(e) => setDesde(e.target.value)} className={claseInput} />
+      </label>
+      <div className="grid grid-cols-2 gap-3">
+        <label className="text-sm text-gray-700">
+          Entre semana
+          <input type="number" min="0" step="1" value={semana} onChange={(e) => setSemana(e.target.value)} className={claseInput} />
+        </label>
+        <label className="text-sm text-gray-700">
+          Fin de semana y feriados
+          <input
+            type="number"
+            min="0"
+            step="1"
+            value={finDeSemana}
+            onChange={(e) => setFinDeSemana(e.target.value)}
+            className={claseInput}
+          />
+        </label>
+      </div>
+      <div className="flex flex-wrap items-center gap-3 mt-3">
+        <button className="bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded-lg text-sm">Guardar</button>
+        {cambio && (
+          <button type="button" onClick={() => guardar(null)} className="text-red-600 hover:underline text-sm">
+            Quitar cambio
+          </button>
+        )}
         {estado && <span className="text-sm text-gray-600">{estado}</span>}
       </div>
     </form>

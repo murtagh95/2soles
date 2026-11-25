@@ -10,6 +10,7 @@ import {
   formDesdeReserva,
   guardarReserva,
   liberarDia,
+  MAX_NOTAS,
   ORIGENES,
   validarReserva,
   type FormReserva,
@@ -32,7 +33,7 @@ type Vista =
   // Día ocupado de antes de que las reservas guardaran datos
   | { tipo: 'legado'; clave: string }
 
-const FORM_VACIO: FormReserva = { nombre: '', personas: '', telefono: '', origen: '', origenOtro: '', precio: '', sena: '' }
+const FORM_VACIO: FormReserva = { nombre: '', personas: '', telefono: '', origen: '', origenOtro: '', precio: '', sena: '', notas: '' }
 
 function mensajeError(e: unknown) {
   return e instanceof ErrorReserva ? e.message : mensajeErrorGuardado(e)
@@ -268,6 +269,12 @@ function FichaReserva({ reserva, feriados, onEditar, onEliminada, onCerrar }: Pr
         <Dato etiqueta="Seña">{reserva.sena ? formatearPrecio(reserva.sena) : 'No dejó'}</Dato>
         <Dato etiqueta="Saldo a cobrar">{formatearPrecio(reserva.precio - reserva.sena)}</Dato>
       </dl>
+      {reserva.notas && (
+        <div>
+          <p className="text-gray-500 text-xs">Notas</p>
+          <p className="whitespace-pre-line break-words">{reserva.notas}</p>
+        </div>
+      )}
       {error && <MensajeError>{error}</MensajeError>}
       <div className="flex flex-wrap items-center gap-3">
         <button onClick={onEditar} className={claseBotonVerde}>
@@ -393,6 +400,17 @@ function FormularioReserva({ reserva, dias, feriados, onGuardada, onCancelar }: 
           <span className="block text-xs text-gray-500">Precio de lista para estos días: {formatearPrecio(precioSugerido)}</span>
         )}
       </p>
+      <label className="block text-gray-700">
+        Notas <span className="text-gray-500 text-xs">(opcional)</span>
+        <textarea
+          value={form.notas}
+          onChange={cambiar('notas')}
+          maxLength={MAX_NOTAS}
+          rows={3}
+          placeholder="Lo que haya que tener presente: pedidos, horario de llegada, lo que se acordó..."
+          className={claseInput}
+        />
+      </label>
 
       {error && <MensajeError>{error}</MensajeError>}
       <div className="flex flex-wrap items-center gap-3">

@@ -26,7 +26,7 @@ export default function Opiniones() {
 
       {/* En celular, carrusel horizontal que se desliza con el dedo; desde tablet, grilla */}
       {lista.length > 0 && (
-        <div className="-mx-4 px-4 mb-8 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 text-left md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible">
+        <div className="-mx-4 px-4 mb-8 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 text-left md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible">
           {lista.map((o) => (
             <figure
               key={o.autor + o.texto}

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Calendario from './Calendario.tsx'
 import Icono from './Icono.tsx'
 import { HORARIO } from '../config.ts'
-import { claveFecha, formatearDia, proximoLibre } from '../fechas.ts'
+import { claveFecha, fechaDesdeClave, formatearDia, proximoLibre } from '../fechas.ts'
 import { calcularPrecio, formatearPrecio, resumenReserva, usePrecios } from '../precios.ts'
 import { useFeriados } from '../useFeriados.ts'
 import { useMontado } from '../useMontado.ts'
@@ -110,6 +110,18 @@ export default function Reserva() {
                   <p className="mt-2 text-sm text-gray-700">
                     Entre semana <strong>{formatearPrecio(precios.semana)}</strong> · Fines de semana y feriados{' '}
                     <strong>{formatearPrecio(precios.finDeSemanaYFeriado)}</strong>
+                  </p>
+                )}
+                {preciosCargados && precios.cambio && (
+                  <p className="mt-1 text-xs text-gray-600">
+                    Desde el{' '}
+                    {fechaDesdeClave(precios.cambio.desde).toLocaleDateString('es-AR', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                    : entre semana {formatearPrecio(precios.cambio.semana)} · fines de semana y feriados{' '}
+                    {formatearPrecio(precios.cambio.finDeSemanaYFeriado)}
                   </p>
                 )}
               </div>

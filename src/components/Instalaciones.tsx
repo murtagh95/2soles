@@ -6,7 +6,7 @@ const instalaciones = [
     img: IMAGENES.quincho,
     alt: 'Quincho techado con mesas, tablones y sillas, mirando al parque',
     titulo: 'Quincho Techado',
-    texto: 'Amplio espacio bajo techo, abierto al parque, con parrilla y mesa y sillas para 25 personas.',
+    texto: 'Amplio espacio bajo techo, abierto al parque, con parrilla y mesa y sillas para 25 a 30 personas.',
   },
   {
     img: IMAGENES.pileta,
@@ -33,7 +33,7 @@ export default function Instalaciones() {
         </p>
         <p>
           Tiene un quincho techado con parrilla y vista al parque, pileta cercada, juegos para los chicos y baños, con
-          capacidad para 25 personas. Es ideal para cumpleaños, reuniones familiares, juntadas con amigos, despedidas de fin de año y días
+          capacidad para 25 a 30 personas. Es ideal para cumpleaños, reuniones familiares, juntadas con amigos, despedidas de fin de año y días
           de pileta en verano.
         </p>
         <p>Elegí la fecha en el calendario, mirá el precio del día y escribinos por WhatsApp para confirmar la reserva.</p>

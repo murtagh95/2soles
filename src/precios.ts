@@ -4,11 +4,15 @@ import { claveFecha } from './fechas.ts'
 import { firebaseApp } from './firebase.ts'
 import { cargarFirestore } from './firestore.ts'
 
+// Precios generales nuevos que empiezan a regir el día "desde" (YYYY-MM-DD), inclusive
+export type CambioPrecios = { desde: string; semana: number; finDeSemanaYFeriado: number }
+
 export type Precios = {
   semana: number
   finDeSemanaYFeriado: number
   // Precio fijo para un día puntual (ej. Navidad), por fecha YYYY-MM-DD
   especiales: Record<string, number>
+  cambio?: CambioPrecios
 }
 
 const RUTA = ['config', 'precios'] as const
@@ -16,9 +20,17 @@ const RUTA = ['config', 'precios'] as const
 export function calcularPrecio(fecha: Date, precios: Precios, feriados: Map<string, string>) {
   const clave = claveFecha(fecha)
   if (clave in precios.especiales) return precios.especiales[clave]
+  const base = precios.cambio && clave >= precios.cambio.desde ? precios.cambio : precios
   const dia = fecha.getDay()
   const esFinDeSemana = dia === 0 || dia === 6
-  return esFinDeSemana || feriados.has(clave) ? precios.finDeSemanaYFeriado : precios.semana
+  return esFinDeSemana || feriados.has(clave) ? base.finDeSemanaYFeriado : base.semana
+}
+
+// Cuando llega el día del cambio, sus precios pasan a ser los generales y el cambio deja de estar pendiente
+export function preciosVigentes(precios: Precios, hoy: Date): Precios {
+  const { cambio, ...resto } = precios
+  if (!cambio || cambio.desde > claveFecha(hoy)) return precios
+  return { ...resto, semana: cambio.semana, finDeSemanaYFeriado: cambio.finDeSemanaYFeriado }
 }
 
 // Texto de un input → monto entero no negativo, o null si no es válido
@@ -47,7 +59,7 @@ export function usePrecios() {
         doc(db, ...RUTA),
         (snap) => {
           const data = snap.data() as Partial<Precios> | undefined
-          setPrecios({ ...PRECIOS_POR_DEFECTO, ...data, especiales: data?.especiales ?? {} })
+          setPrecios(preciosVigentes({ ...PRECIOS_POR_DEFECTO, ...data, especiales: data?.especiales ?? {} }, new Date()))
           setCargado(true)
           setError(null)
         },
@@ -67,8 +79,27 @@ export function usePrecios() {
 }
 
 export async function guardarPreciosBase(semana: number, finDeSemanaYFeriado: number) {
-  const { db, doc, setDoc } = await cargarFirestore()
-  await setDoc(doc(db, ...RUTA), { semana, finDeSemanaYFeriado }, { merge: true })
+  const { db, doc, getDoc, setDoc, deleteField } = await cargarFirestore()
+  const ref = doc(db, ...RUTA)
+  // Un cambio que ya empezó a regir taparía los precios que se están guardando: se borra
+  const cambio = (await getDoc(ref)).data()?.cambio as CambioPrecios | undefined
+  const vencido = cambio !== undefined && cambio.desde <= claveFecha(new Date())
+  await setDoc(ref, { semana, finDeSemanaYFeriado, ...(vencido ? { cambio: deleteField() } : {}) }, { merge: true })
+}
+
+// cambio null quita el cambio programado
+export async function guardarCambioPrecios(precios: Precios, cambio: CambioPrecios | null) {
+  const { db, doc, setDoc, deleteField } = await cargarFirestore()
+  await setDoc(
+    doc(db, ...RUTA),
+    {
+      // Se incluyen los precios base para que el documento sea válido aunque todavía no exista
+      semana: precios.semana,
+      finDeSemanaYFeriado: precios.finDeSemanaYFeriado,
+      cambio: cambio ?? deleteField(),
+    },
+    { merge: true },
+  )
 }
 
 // precio null quita el precio especial y el día vuelve al precio normal
