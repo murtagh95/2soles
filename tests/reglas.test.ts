@@ -208,6 +208,17 @@ describe('config/precios', () => {
     await assertFails(setDoc(ref, { ...preciosValidos, especiales: 'gratis' }))
   })
 
+  test('el admin puede programar un cambio de precios válido', async () => {
+    const ref = doc(admin(), 'config', 'precios')
+    const cambio = { desde: '2027-01-01', semana: 60000, finDeSemanaYFeriado: 90000 }
+    await assertSucceeds(setDoc(ref, { ...preciosValidos, cambio }))
+    await assertFails(setDoc(ref, { ...preciosValidos, cambio: { ...cambio, desde: 'enero' } }))
+    await assertFails(setDoc(ref, { ...preciosValidos, cambio: { ...cambio, semana: -1 } }))
+    await assertFails(setDoc(ref, { ...preciosValidos, cambio: { ...cambio, extra: 1 } }))
+    await assertFails(setDoc(ref, { ...preciosValidos, cambio: { desde: '2027-01-01', semana: 60000 } }))
+    await assertFails(setDoc(ref, { ...preciosValidos, cambio: 'enero' }))
+  })
+
   test('nadie puede escribir otros documentos de config', async () => {
     await assertFails(setDoc(doc(admin(), 'config', 'otro'), { valor: 1 }))
     await assertFails(getDoc(doc(anonimo(), 'config', 'otro')))

@@ -1,6 +1,13 @@
 import { describe, expect, test } from 'vitest'
 import { claveFecha } from './fechas.ts'
-import { calcularPrecio, formatearPrecio, formatearPrecioCorto, resumenReserva, type Precios } from './precios.ts'
+import {
+  calcularPrecio,
+  formatearPrecio,
+  formatearPrecioCorto,
+  preciosVigentes,
+  resumenReserva,
+  type Precios,
+} from './precios.ts'
 
 const precios: Precios = {
   semana: 45000,
@@ -78,5 +85,30 @@ describe('formatearPrecioCorto', () => {
     expect(formatearPrecioCorto(97500)).toBe('97,5k')
     expect(formatearPrecioCorto(1500000)).toBe('1,5M')
     expect(formatearPrecioCorto(0)).toBe('0')
+  })
+})
+
+describe('cambio de precios programado', () => {
+  const conCambio: Precios = { ...precios, cambio: { desde: '2027-01-01', semana: 60000, finDeSemanaYFeriado: 90000 } }
+
+  test('antes de la fecha se cobran los precios actuales', () => {
+    expect(calcularPrecio(new Date(2026, 11, 30), conCambio, feriados)).toBe(45000) // miércoles
+    expect(calcularPrecio(new Date(2026, 11, 26), conCambio, feriados)).toBe(70000) // sábado
+  })
+
+  test('desde la fecha, inclusive, se cobran los nuevos', () => {
+    expect(calcularPrecio(new Date(2027, 0, 1), conCambio, feriados)).toBe(60000) // viernes
+    expect(calcularPrecio(new Date(2027, 0, 2), conCambio, feriados)).toBe(90000) // sábado
+  })
+
+  test('un precio especial sigue teniendo prioridad', () => {
+    const conEspecial = { ...conCambio, especiales: { '2027-01-01': 150000 } }
+    expect(calcularPrecio(new Date(2027, 0, 1), conEspecial, feriados)).toBe(150000)
+  })
+
+  test('cuando llega la fecha, los precios nuevos pasan a ser los generales', () => {
+    expect(preciosVigentes(conCambio, new Date(2026, 11, 31))).toBe(conCambio)
+    const vigentes = preciosVigentes(conCambio, new Date(2027, 0, 1))
+    expect(vigentes).toEqual({ ...precios, semana: 60000, finDeSemanaYFeriado: 90000 })
   })
 })
