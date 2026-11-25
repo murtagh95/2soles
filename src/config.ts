@@ -11,7 +11,7 @@ export const REDES = {
 export const HORARIO = '10 a 20 hs'
 
 // Lo que se entrega con el alquiler (sección "Qué incluye")
-export const CAPACIDAD = 25
+export const CAPACIDAD = '25 a 30'
 export const INCLUYE = [
   'Quincho techado',
   'Pileta',
