@@ -22,6 +22,8 @@ export type DatosReserva = {
   origenOtro?: string
   telefono: string
   precio: number
+  // Texto libre para tener presente (pedidos, horarios, lo que se acordó)
+  notas?: string
   // Fechas YYYY-MM-DD, ordenadas
   dias: string[]
 }
@@ -37,6 +39,7 @@ export type FormReserva = {
   origenOtro: string
   precio: string
   sena: string
+  notas: string
 }
 
 // Se queda con los números y un + inicial: los teléfonos copiados de WhatsApp o de los contactos
@@ -47,11 +50,13 @@ export function normalizarTelefono(valor: string) {
 }
 
 const TELEFONO = /^\+?[0-9]{6,20}$/
+export const MAX_NOTAS = 2000
 
 export function validarReserva(form: FormReserva, dias: string[]): { datos: DatosReserva } | { error: string } {
   const nombre = form.nombre.trim()
   const telefono = normalizarTelefono(form.telefono)
   const origenOtro = form.origenOtro.trim()
+  const notas = form.notas.trim()
   const personas = leerPrecio(form.personas)
   const precio = leerPrecio(form.precio)
   // Sin seña se puede dejar vacío
@@ -69,6 +74,7 @@ export function validarReserva(form: FormReserva, dias: string[]): { datos: Dato
   if (precio === null) return { error: 'El precio tiene que ser un monto entero, sin puntos ni signos.' }
   if (sena === null) return { error: 'La seña tiene que ser un monto entero, sin puntos ni signos.' }
   if (sena > precio) return { error: 'La seña no puede ser mayor que el precio.' }
+  if (notas.length > MAX_NOTAS) return { error: `Las notas pueden tener hasta ${MAX_NOTAS} caracteres.` }
 
   return {
     datos: {
@@ -79,6 +85,7 @@ export function validarReserva(form: FormReserva, dias: string[]): { datos: Dato
       ...(form.origen === 'otro' ? { origenOtro } : {}),
       telefono,
       precio,
+      ...(notas ? { notas } : {}),
       dias: [...dias].sort(),
     },
   }
@@ -93,6 +100,7 @@ export function formDesdeReserva(reserva: Reserva): FormReserva {
     origenOtro: reserva.origenOtro ?? '',
     precio: String(reserva.precio),
     sena: reserva.sena ? String(reserva.sena) : '',
+    notas: reserva.notas ?? '',
   }
 }
 

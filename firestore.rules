@@ -41,7 +41,7 @@ service cloud.firestore {
     }
 
     function reservaValida(d) {
-      return d.keys().hasOnly(['nombre', 'personas', 'sena', 'origen', 'origenOtro', 'telefono', 'precio', 'dias', 'creadoEn', 'actualizadoEn'])
+      return d.keys().hasOnly(['nombre', 'personas', 'sena', 'origen', 'origenOtro', 'telefono', 'precio', 'notas', 'dias', 'creadoEn', 'actualizadoEn'])
         && d.keys().hasAll(['nombre', 'personas', 'sena', 'origen', 'telefono', 'precio', 'dias', 'creadoEn', 'actualizadoEn'])
         && d.nombre is string && d.nombre.size() > 0 && d.nombre.size() <= 100
         && d.personas is int && d.personas > 0 && d.personas <= 500
@@ -50,6 +50,7 @@ service cloud.firestore {
         && d.origen in ['instagram', 'facebook', 'google', 'web', 'recomendacion', 'repite', 'otro']
         && d.get('origenOtro', '') is string && d.get('origenOtro', '').size() <= 100
         && d.telefono is string && d.telefono.matches('^[0-9 +()-]{6,30}$')
+        && d.get('notas', '') is string && d.get('notas', '').size() <= 2000
         && d.dias is list && d.dias.size() > 0 && d.dias.size() <= 31
         && d.creadoEn is timestamp && d.actualizadoEn is timestamp;
     }

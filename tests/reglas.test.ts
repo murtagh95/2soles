@@ -152,6 +152,7 @@ describe('reservas', () => {
     await assertSucceeds(setDoc(ref, { ...reserva(['2026-12-30']), origen: 'facebook' }))
     await assertSucceeds(setDoc(ref, { ...reserva(['2026-12-30']), origen: 'web' }))
     await assertSucceeds(setDoc(ref, { ...reserva(['2026-12-30']), origen: 'otro', origenOtro: 'Un cartel en la ruta' }))
+    await assertSucceeds(setDoc(ref, { ...reserva(['2026-12-30']), notas: 'Traen torta.\nLlegan a las 11' }))
     await assertSucceeds(deleteDoc(ref))
   })
 
@@ -167,6 +168,8 @@ describe('reservas', () => {
     await assertFails(setDoc(ref, { ...valida, telefono: '<script>' }))
     await assertFails(setDoc(ref, { ...valida, dias: [] }))
     await assertFails(setDoc(ref, { ...valida, email: 'juan@ejemplo.com' }))
+    await assertFails(setDoc(ref, { ...valida, notas: 'a'.repeat(2001) }))
+    await assertFails(setDoc(ref, { ...valida, notas: 123 }))
     const { telefono: _, ...sinTelefono } = valida
     await assertFails(setDoc(ref, sinTelefono))
   })

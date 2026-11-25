@@ -9,6 +9,7 @@ const form: FormReserva = {
   origenOtro: '',
   precio: '140000',
   sena: '30000',
+  notas: '',
 }
 const dias = ['2026-12-31', '2026-12-30']
 
@@ -84,9 +85,22 @@ describe('normalizarTelefono', () => {
   })
 })
 
+describe('notas', () => {
+  test('se guardan sin espacios de más y vacías no se guardan', () => {
+    const conNotas = validarReserva({ ...form, notas: '  Traen torta.\nLlegan 11 hs  ' }, dias)
+    expect('datos' in conNotas && conNotas.datos.notas).toBe('Traen torta.\nLlegan 11 hs')
+    const sinNotas = validarReserva({ ...form, notas: '   ' }, dias)
+    expect('datos' in sinNotas && 'notas' in sinNotas.datos).toBe(false)
+  })
+
+  test('no pueden ser demasiado largas', () => {
+    expect(error({ notas: 'a'.repeat(2001) })).toMatch(/notas/)
+  })
+})
+
 describe('formDesdeReserva', () => {
   test('una reserva guardada vuelve al formulario y se valida igual', () => {
-    const r = validarReserva({ ...form, origen: 'otro', origenOtro: 'Un cartel', sena: '' }, dias)
+    const r = validarReserva({ ...form, origen: 'otro', origenOtro: 'Un cartel', sena: '', notas: 'Traen torta' }, dias)
     if (!('datos' in r)) throw new Error(r.error)
     const vuelta = formDesdeReserva({ ...r.datos, id: 'r1' })
     expect(vuelta.sena).toBe('')
